@@ -536,7 +536,7 @@ function normalize(d){
   return s;
 }
 const LS=k=>"reelkitchen3:"+k;
-function loadLocal(){let raw=null;try{raw=localStorage.getItem(LS(wkey(wOff)))||localStorage.getItem("reelkitchen2:"+wkey(wOff));}catch(e){}
+function loadLocal(){let raw=null;try{raw=localStorage.getItem(LS(wkey(wOff)));}catch(e){}
   S=normalize(raw?JSON.parse(raw):null);}
 const saveLocal=()=>{try{localStorage.setItem(LS(wkey(wOff)),JSON.stringify(S));}catch(e){}};
 let tmr=null;
@@ -734,14 +734,7 @@ document.getElementById("wp").onclick=()=>{wOff--;watch();};
 document.getElementById("wn").onclick=()=>{wOff++;watch();};
 document.getElementById("theme").onclick=()=>{const c=document.documentElement.getAttribute("data-theme");const dark=c?c==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.setAttribute("data-theme",dark?"light":"dark");};
 
-/* A starter week on a first visit, so the board opens with something on it. */
-function seed(){try{if(localStorage.getItem(LS("seeded")))return false;localStorage.setItem(LS("seeded"),"1");}catch(e){}
-  if(wOff!==0||Object.keys(S.basket).length)return false;
-  [["bagels",4],["tandoori",4],["palakpaneer",4],["slopbowl",4],["tunapizza",2],["calabacinfrio",4],["onepotbulgogi",2]].forEach(([id,sv])=>S.basket[id]={serv:sv,cooked:false});
-  Object.assign(S.days,{"0-b":"bagels","0-d":"palakpaneer","1-l":"slopbowl","2-d":"tandoori","3-l":"calabacinfrio","4-d":"tunapizza"});
-  saveLocal();return true;}
-loadLocal();const fresh=seed();draw();go("week");
-if(fresh)setTimeout(()=>toast("A starter week to show you around — change anything"),800);
+loadLocal();draw();go("book");
 /* ── live sync: Firestore, one shared household ── */
 (function(){
   if(!window.firebase)return;

@@ -318,7 +318,103 @@ const TYPES=[
  {id:"fresh",label:"Cook tonight",short:"Fresh",c:"var(--t7)",desc:"Made and eaten the same day, usually in half an hour."}
 ];
 const T=Object.fromEntries(TYPES.map(t=>[t.id,t]));
-const AISLES=[["produce","Fruit & veg"],["meat","Meat & fish"],["dairy","Dairy & eggs"],["bakery","Bread & wraps"],["asian","World foods"],["pantry","Pantry & dry goods"],["frozen","Freezer aisle"],["other","Other"]];
+const AISLES=[["produce","Fruit & veg"],["meat","Meat & fish"],["dairy","Dairy & eggs"],["bakery","Bread & wraps"],["asian","World foods"],["pantry","Pantry & dry goods"],["frozen","Freezer aisle"],["other","Other"],["staples","Staples you probably have"]];
+
+/* ═══════════ ONE NAME PER INGREDIENT ═══════════
+   34 creators, two languages, plurals everywhere. Every ingredient collapses to one
+   shopping name here, so "chicken thigh" + "chicken thighs" + "boneless skinless
+   chicken thigh" is one line that adds up. Canonical → aliases (lower-case).      */
+const CANON={
+ "chicken thighs":["chicken thigh","boneless skinless chicken thigh"],
+ "chicken mince":["carne picada de pollo","pechuga de pollo o pavo"],
+ "ground beef":["lean ground beef","95% lean ground beef","carne molida 90/10"],
+ "thinly sliced beef (bulgogi cut)":["eye of round beef","thinly sliced ribeye","petite top sirloin"],
+ "sliced turkey (deli)":["fiambre sin aditivos","pavo 99%"],
+ "whole chicken":["pollo entero"],
+ "eggs":["egg","huevo","huevos"],
+ "cottage cheese":["queso cottage","low-fat cottage cheese"],
+ "Greek yogurt":["0% greek yogurt","nonfat greek yogurt","yogur"],
+ "Parmesan":["parmesano","queso parmesano","queso parmesano rallado"],
+ "mozzarella":["mozzarella rallada sin grasa"],
+ "grated cheese":["queso rallado","shredded mexican cheese"],
+ "cheese slices":["cheese","sliced cheddar cheese","queso light"],
+ "cream cheese":["queso crema"],"soft cheese (cremoso)":["queso cremoso"],"cream":["crema"],
+ "butter":["salted butter"],"ricotta":["queso ricotta sin grasa"],
+ "garlic":["ajo"],"ginger":["fresh ginger","jengibre"],
+ "onion":["cebolla","cebollas","yellow onion","white onion","sweet onions"],
+ "red onion":["cebolla morada"],
+ "spring onions":["spring onion","green onion","green onions","scallions","cebollas de verdeo"],
+ "cucumber":["pepino","persian cucumber","persian cucumbers"],
+ "courgette (zucchini)":["zucchini","calabacín","calabacines"],
+ "carrot":["zanahoria","zanahorias"],
+ "lime":["limes","lima"],"lime zest":["ralladura de lima"],
+ "lemon":["limón","lemon juice"],
+ "fresh coriander":["cilantro","fresh cilantro"],
+ "fresh basil":["albahaca fresca"],"Thai basil":["fresh thai basil"],
+ "fresh mint":["menta"],"fresh parsley":["perejil","perejil fresco"],
+ "sweet potatoes":["batatas","cooked sweet potato"],"potato":["patata"],
+ "fresh spinach":["espinaca"],"cabbage":["repollo","repollo blanco"],
+ "red chilli":["guindilla fresca"],"bell peppers":["pimientos"],
+ "avocado":["aguacate"],"rocket":["rúcula"],"green beans":["judías verdes"],
+ "fresh thyme":["tomillo"],"jalapeños":["fresh jalapeños"],
+ "soy sauce":["low-sodium soy sauce"],
+ "gochugaru":["gochugaru or red pepper flakes"],
+ "ginger-garlic paste":["ginger and garlic paste"],
+ "five spice powder":["chinese five spice powder"],
+ "olive oil":["aceite de oliva","aceite de oliva virgen extra"],
+ "avocado oil":["aceite de aguacate"],
+ "spray oil":["spray cooking oil"],
+ "salt":["sal","kosher salt"],
+ "salt & pepper":["salt and pepper","salt and black pepper","sal y pimienta","sal y pimienta negra","sal y especias"],
+ "salt, pepper & nutmeg":["sal, pimienta y nuez moscada"],
+ "salt, pepper, garlic & paprika":["sal, pimienta, ajo en polvo y paprika","garlic powder, onion powder, salt, pepper"],
+ "water":["agua","agua fría","water or milk"],
+ "sugar":["azúcar","caster sugar"],
+ "brown sugar substitute":["stevia brown sugar substitute"],
+ "rice":["arroz"],
+ "oregano":["dried oregano","orégano"],
+ "cumin":["ground cumin"],"turmeric":["cúrcuma"],
+ "chilli flakes":["ají molido"],
+ "garlic powder":["ajo en polvo"],
+ "tomato / pizza sauce":["salsa de tomate","salsa de tomate para pizza","salsa marinara"],
+ "passata":["tomate triturado natural"],
+ "tinned chickpeas":["garbanzos cocidos"],"tinned white beans":["alubias blancas"],
+ "tinned butter beans":["judiones"],"tinned tuna":["atún"],
+ "chicken stock":["low-sodium chicken broth","chicken bone broth"],
+ "mayonnaise":["light mayonnaise"],
+ "olives":["aceitunas"],"sun-dried tomatoes":["tomates secos"],"saffron":["azafrán"],
+ "small pasta (munición)":["fideos munición"],
+ "bay leaves":["laurel"],"peppercorns":["granos de pimienta"],
+ "herbes de Provence":["hierbas provenzales"],
+ "wholegrain mustard":["mostaza en grano"],
+ "vinegar":["vinagre"],"apple cider vinegar":["vinagre de manzana"],
+ "breadcrumbs":["pan rallado o avena"]
+};
+const ALIAS={};for(const c in CANON){ALIAS[c.toLowerCase()]=c;CANON[c].forEach(a=>ALIAS[a]=c);}
+const canonName=n=>ALIAS[n.toLowerCase().trim()]||n;
+const STAPLE=new Set(["salt","black pepper","salt & pepper","salt, pepper & nutmeg","salt, pepper, garlic & paprika","olive oil","spray oil","vegetable oil","neutral oil","rapeseed oil","avocado oil","water","sugar"]);
+
+/* units: one spelling each, then families that can be summed */
+const UNIT={cdas:"tbsp",cda:"tbsp",cdtas:"tsp",cdta:"tsp",cups:"cup",taza:"cup",tazas:"cup",cloves:"clove",diente:"clove",dientes:"clove",
+  latas:"can",botes:"can",hojas:"leaf",leaves:"leaf",sheets:"sheet",slices:"slice",sobres:"sachet",manojo:"bunch",paquete:"bag",puñado:"handful",kg:"g",l:"ml"};
+const canonUnit=u=>UNIT[u]||u||"×";
+const VOL={tsp:1,tbsp:3,cup:48};                 /* volume family, in teaspoons */
+/* per-ingredient conversions into one sensible unit */
+const CONV={
+ "garlic":{tbsp:["clove",3],tsp:["clove",1]},
+ "ginger":{tbsp:["cm",2.5],slice:["cm",0.5]},
+ "onion":{cup:["×",1]},
+ "lemon":{tbsp:["×",1/3]},
+ "spring onions":{tbsp:["×",0.25]},
+ "cottage cheese":{cup:["g",225]},
+ "Greek yogurt":{cup:["g",245]},
+ "mozzarella":{cup:["g",110]},
+ "grated cheese":{cup:["g",110]},
+ "jasmine rice":{cup:["g",185]},
+ "sweet potatoes":{cup:["g",250]},
+ "fresh coriander":{cup:["g",16]}
+};
+const PLURAL={clove:"cloves",sheet:"sheets",slice:"slices",can:"cans",leaf:"leaves",sachet:"sachets",bunch:"bunches",handful:"handfuls",block:"blocks",bag:"bags"};
 
 /* ═══════════ RECIPES — i: [qty|null, unit, name, aisle, note?]  ["G","","Heading"] starts a group ═══════════ */
 const R=[
@@ -551,15 +647,27 @@ function list(){
   const m=new Map();
   for(const b of basket()){
     const mult=(b.serv||b.r.serves)/b.r.serves;
-    for(const g of b.r.i){if(g[0]==="G")continue;const [q,u,name,aisle,note]=g;const key=name.toLowerCase()+"|"+aisle;
+    for(const g of b.r.i){if(g[0]==="G")continue;
+      const [q,u0,raw,aisle0,note]=g;
+      const name=canonName(raw),aisle=STAPLE.has(name)?"staples":aisle0,key=name;
       if(!m.has(key))m.set(key,{name,aisle,units:{},soft:false,from:new Set(),notes:new Set()});
       const e=m.get(key);e.from.add(b.r.n);if(note)e.notes.add(note);
-      if(q==null)e.soft=true;else{const uu=u||"×";e.units[uu]=(e.units[uu]||0)+q*mult;}}
+      if(q==null){e.soft=true;continue;}
+      let unit=canonUnit(u0),qty=q*mult;
+      const c=CONV[name]&&CONV[name][unit];if(c){unit=c[0];qty*=c[1];}
+      if(VOL[unit]){qty*=VOL[unit];unit="vol";}           /* tsp/tbsp/cup add up as one */
+      e.units[unit]=(e.units[unit]||0)+qty;}
   }
   const out={};for(const [key,e] of m)(out[e.aisle]=out[e.aisle]||[]).push({key,...e});
   for(const a in out)out[a].sort((x,y)=>x.name.localeCompare(y.name));return out;
 }
-const qtxt=e=>{const p=Object.entries(e.units).map(([u,v])=>fq(v)+(u==="×"?"":" "+u));return p.length?p.join(" + "):null;};
+function unitText(u,v){
+  if(u==="vol"){ if(v>=48)return fq(Math.round(v/48*4)/4)+" cup"+(v/48>1?"s":""); if(v>=3)return fq(Math.round(v/3*4)/4)+" tbsp"; return fq(Math.round(v*4)/4)+" tsp"; }
+  if(u==="g"||u==="ml")return Math.round(v)+" "+u;
+  if(u==="×")return fq(v);
+  const n=fq(v);return n+" "+(v>1&&PLURAL[u]?PLURAL[u]:u);
+}
+const qtxt=e=>{const p=Object.entries(e.units).map(([u,v])=>unitText(u,v));return p.length?p.join(" + "):null;};
 
 /* ═══════════ BITS ═══════════ */
 const CHK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
@@ -639,7 +747,7 @@ function drawShop(){
     <div class="row" style="margin-bottom:22px"><button class="btn o s" id="cpy">Copy as text</button><button class="btn o s" id="unc">Untick all</button></div>
     ${html}
     <div class="aisle"><div class="ah"><h3>Add your own</h3></div>${ex}<div class="addr"><input id="xa" placeholder="Milk, coffee, olive oil…" aria-label="Add an item"><button class="btn" id="xb">Add</button></div></div>
-    <p class="tiny muted" style="margin-top:22px;line-height:1.55">Amounts add together only when creators used the same unit; otherwise both are shown — <b>500 g + 2 tbsp</b> — rather than a guessed conversion. <i>As needed</i> means the post gave no quantity.</p>`;
+    <p class="tiny muted" style="margin-top:22px;line-height:1.55">The same ingredient under different names — <i>chicken thigh</i>, <i>chicken thighs</i>, <i>ajo</i> and <i>garlic</i> — is one line here, and amounts add up across recipes. Where two units genuinely can't be combined you'll see both, like <b>20 g + 1 bunch</b>. <i>As needed</i> means the post gave no quantity.</p>`;
   const left=tot-done;document.getElementById("b-shop").textContent=left?String(left):"";
 }
 

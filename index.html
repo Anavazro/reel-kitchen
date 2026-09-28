@@ -1,0 +1,728 @@
+<title>Reel Kitchen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+
+<style>
+:root{
+  --bg:#FFFFFF; --band:#F4F4F1; --sunk:#ECECE8; --card:#FFFFFF;
+  --ink:#121314; --ink-2:#5A5F64; --ink-3:#8C9196;
+  --rule:#E5E5E1; --rule-2:#CFCFCA;
+  --btn:#141516; --btn-ink:#FFFFFF;
+  --ok:#2A9A5A; --ok-soft:#DFF3E7; --warn:#A76A12;
+  --sh:0 2px 8px rgba(18,19,20,.06),0 12px 32px -14px rgba(18,19,20,.22);
+  --sh-lg:0 -4px 24px rgba(18,19,20,.08),0 30px 80px -20px rgba(18,19,20,.45);
+  --t1:#4C93B8; --t2:#4F6DA8; --t3:#3E8C79; --t4:#6D8C3F; --t5:#C0912F; --t6:#BE6B35; --t7:#B34A3F;
+  --nav:64px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111214; --band:#191A1D; --sunk:#222327; --card:#1B1C1F;
+    --ink:#F1F1EE; --ink-2:#A8ADB1; --ink-3:#767B80;
+    --rule:#2A2C30; --rule-2:#3B3E43;
+    --btn:#F1F1EE; --btn-ink:#111214;
+    --ok:#5DC386; --ok-soft:#1E3A2A; --warn:#D9A84E;
+    --sh:0 2px 8px rgba(0,0,0,.4),0 12px 32px -14px rgba(0,0,0,.7);
+    --sh-lg:0 -4px 24px rgba(0,0,0,.5),0 30px 80px -20px rgba(0,0,0,.9);
+    --t1:#63AFD3; --t2:#7C9BE0; --t3:#55B49D; --t4:#94B858; --t5:#DDAE4C; --t6:#DC8956; --t7:#DC6B60;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111214; --band:#191A1D; --sunk:#222327; --card:#1B1C1F;
+  --ink:#F1F1EE; --ink-2:#A8ADB1; --ink-3:#767B80;
+  --rule:#2A2C30; --rule-2:#3B3E43;
+  --btn:#F1F1EE; --btn-ink:#111214;
+  --ok:#5DC386; --ok-soft:#1E3A2A; --warn:#D9A84E;
+  --sh:0 2px 8px rgba(0,0,0,.4),0 12px 32px -14px rgba(0,0,0,.7);
+  --sh-lg:0 -4px 24px rgba(0,0,0,.5),0 30px 80px -20px rgba(0,0,0,.9);
+  --t1:#63AFD3; --t2:#7C9BE0; --t3:#55B49D; --t4:#94B858; --t5:#DDAE4C; --t6:#DC8956; --t7:#DC6B60;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;
+  padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;line-height:1.1;text-wrap:balance}
+h1{font-size:28px}h2{font-size:22px}h3{font-size:17px}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none;padding:0;text-align:left;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
+.app{max-width:720px;margin:0 auto;padding:0 18px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.muted{color:var(--ink-2)}.tiny{font-size:12.5px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:5px 11px;font-size:12px;font-weight:600;background:var(--sunk);color:var(--ink-2)}
+.pill i{width:7px;height:7px;border-radius:99px;background:var(--tc);flex:none}
+.pill.solid{background:var(--btn);color:var(--btn-ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--btn);color:var(--btn-ink);
+  border-radius:99px;padding:12px 20px;font-size:14.5px;font-weight:700;white-space:nowrap}
+.btn:hover{filter:brightness(1.12)}
+.btn.o{background:var(--card);color:var(--ink);border:1.5px solid var(--rule-2)}
+.btn.o:hover{background:var(--sunk);filter:none}
+.btn.s{padding:8px 14px;font-size:13px}
+.btn.g{background:var(--ok);color:#fff}
+.btn.w{width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* top */
+.top{position:sticky;top:0;z-index:40;background:var(--bg);padding:14px 0 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--rule)}
+.top h1{font-size:24px;margin-right:auto}
+.ramp{display:flex;gap:2px;margin-left:8px}.ramp i{width:10px;height:3px;border-radius:2px}
+.wk{display:flex;align-items:center;background:var(--sunk);border-radius:99px;padding:3px}
+.wk button{width:30px;height:30px;border-radius:99px;display:grid;place-items:center;color:var(--ink-2);font-size:15px}
+.wk button:hover{background:var(--card);color:var(--ink)}
+.wk .lab{padding:0 9px;text-align:center;line-height:1.15}
+.wk .lab b{display:block;font-size:12.5px;font-weight:700}.wk .lab span{display:block;font-size:10.5px;color:var(--ink-3)}
+.ico{width:34px;height:34px;border-radius:99px;background:var(--sunk);display:grid;place-items:center;color:var(--ink-2);flex:none}
+.ico:hover{color:var(--ink)}
+
+main{padding:18px 0 30px}
+.panel[hidden]{display:none!important}
+.sec{margin:0 0 28px}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.sec-h h2{flex:1}
+.sec-h .n{font-size:13px;font-weight:600;color:var(--ink-3)}
+.sec-p{margin:0 0 14px;color:var(--ink-2);font-size:14px;line-height:1.5}
+.band{background:var(--band);margin:0 -18px;padding:22px 18px 24px;border-radius:0}
+@media(min-width:720px){.band{border-radius:20px;margin:0}}
+
+/* search */
+.srch{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--rule-2);border-radius:99px;padding:0 16px;height:46px;margin-bottom:22px}
+.srch input{border:none;background:none;outline:none;width:100%;font-size:15px}
+.srch svg{color:var(--ink-3);flex:none}
+.chips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;margin:0 -18px;padding-left:18px;padding-right:18px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:8px 14px;border:1.5px solid var(--rule-2);background:var(--card);font-size:13px;font-weight:600;color:var(--ink-2)}
+.chip i{width:8px;height:8px;border-radius:99px;background:var(--tc)}
+.chip[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+
+/* horizontal scroller */
+.hs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -18px;padding:4px 18px 8px}
+.hs::-webkit-scrollbar{display:none}
+.hs>*{flex:0 0 74%;scroll-snap-align:start}
+@media(min-width:520px){.hs>*{flex-basis:calc(50% - 6px)}}
+@media(min-width:720px){.hs>*{flex-basis:calc(33.333% - 8px)}}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 12px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+/* recipe card */
+.rc{display:block;width:100%}
+.shot{position:relative;aspect-ratio:1/1;border-radius:20px;overflow:hidden;background:var(--tc);box-shadow:var(--sh)}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.rc:hover .shot img{transform:scale(1.04)}
+@media(prefers-reduced-motion:reduce){.shot img{transition:none}.rc:hover .shot img{transform:none}}
+.shot .noimg{position:absolute;inset:0;display:grid;place-items:center;padding:16px;text-align:center;color:#fff;
+  background:linear-gradient(150deg,var(--tc),color-mix(in srgb,var(--tc) 55%,#000))}
+.shot .noimg span{font-weight:800;font-size:18px;line-height:1.15;letter-spacing:-.02em}
+.shot .pin{position:absolute;top:10px;left:10px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.94);color:#121314;
+  border-radius:99px;padding:5px 10px 5px 8px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;backdrop-filter:blur(6px)}
+.shot .pin i{width:7px;height:7px;border-radius:99px;background:var(--tc)}
+.shot .in{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:99px;background:var(--ok);color:#fff;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.rc h3{margin:10px 0 2px;font-size:15.5px;line-height:1.2;font-weight:700;letter-spacing:-.015em}
+.rc .m{font-size:12.5px;color:var(--ink-3)}
+
+/* basket card (recipes to cook) */
+.bk{display:block;width:100%;position:relative}
+.bk .shot{aspect-ratio:1/1}
+.bk .ck{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.95);color:#121314;border-radius:99px;padding:7px 12px 7px 9px;font-size:12.5px;font-weight:700;backdrop-filter:blur(6px)}
+.bk .ck i{width:16px;height:16px;border-radius:5px;border:2px solid #121314;display:grid;place-items:center;color:transparent}
+.bk.done .ck i{background:var(--ok);border-color:var(--ok);color:#fff}
+.bk.done .shot img{filter:grayscale(.5);opacity:.75}
+.bk .ctl{position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:8px}
+.stp{display:inline-flex;align-items:center;background:rgba(255,255,255,.95);color:#121314;border-radius:99px;padding:3px;backdrop-filter:blur(6px)}
+.stp button{width:30px;height:30px;border-radius:99px;display:grid;place-items:center;font-size:17px;font-weight:600;color:#121314}
+.stp button:hover{background:#ECECE8}
+.stp b{min-width:26px;text-align:center;font-size:14px}
+.bk .rm{margin-left:auto;width:36px;height:36px;border-radius:99px;background:#121314;color:#fff;display:grid;place-items:center}
+.bk .rm:hover{background:var(--t7)}
+
+/* days */
+.day{background:var(--card);border:1.5px solid var(--rule);border-radius:20px;padding:12px 12px 12px;margin-bottom:10px}
+.day.now{border-color:var(--ink)}
+.day-h{display:flex;align-items:baseline;gap:8px;margin:0 2px 10px}
+.day-h b{font-size:16px;font-weight:800;letter-spacing:-.02em}.day-h span{font-size:12px;color:var(--ink-3)}
+.day.now .day-h span{color:var(--ok);font-weight:700}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sl{border-radius:14px;padding:8px;min-height:74px;display:flex;flex-direction:column;gap:6px;background:var(--band);border:1.5px dashed var(--rule-2);width:100%}
+.sl:hover{border-color:var(--ink-3)}
+.sl .t{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.sl .plus{font-size:13px;color:var(--ink-3);margin-top:auto}
+.sl.on{background:var(--card);border:1.5px solid var(--rule);flex-direction:row;align-items:center;gap:8px;padding:7px}
+.sl.on .th{width:40px;height:40px;border-radius:10px;overflow:hidden;background:var(--tc);flex:none}
+.sl.on .th img{width:100%;height:100%;object-fit:cover}
+.sl.on .nm{font-size:12px;font-weight:700;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sl.on .t{margin-bottom:1px}
+@media(max-width:420px){.sl.on{flex-direction:column;align-items:flex-start}.sl.on .th{width:100%;height:44px;border-radius:9px}}
+
+/* prep */
+.pr{display:flex;gap:11px;padding:11px 0;border-top:1px solid var(--rule)}
+.pr:first-child{border-top:none;padding-top:0}
+.pr i{width:8px;height:8px;border-radius:99px;background:var(--tc);flex:none;margin-top:6px}
+.pr b{font-size:14px;font-weight:700;display:block;line-height:1.3}
+.pr span{font-size:13px;color:var(--ink-2);line-height:1.45}
+
+/* shopping */
+.aisle{margin-bottom:22px}
+.ah{display:flex;align-items:center;gap:10px;padding:0 2px 8px;margin-bottom:2px;border-bottom:2px solid var(--ink)}
+.ah h3{font-size:15px}.ah em{margin-left:auto;font-style:normal;font-size:12px;font-weight:700;color:var(--ink-3)}
+.it{display:flex;align-items:flex-start;gap:13px;padding:11px 4px;width:100%;border-bottom:1px solid var(--rule)}
+.it:last-child{border-bottom:none}
+.bx{width:22px;height:22px;flex:none;border:2px solid var(--rule-2);border-radius:7px;display:grid;place-items:center;color:transparent;margin-top:1px}
+.it.ok .bx{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.it.ok .nm{text-decoration:line-through;color:var(--ink-3)}
+.it.ok .q{color:var(--ink-3)}
+.it .b{flex:1;min-width:0}
+.it .nm{font-size:15px;font-weight:600;line-height:1.3}
+.it .fr{font-size:12px;color:var(--ink-3);line-height:1.4;margin-top:2px}
+.it .q{font-size:14px;font-weight:700;white-space:nowrap;padding-left:8px;color:var(--ink-2)}
+.it .q.soft{font-weight:400;font-style:italic;font-size:12.5px;color:var(--ink-3)}
+.prog{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--sunk);margin:10px 0 14px}
+.prog i{height:100%;background:var(--ok)}
+.addr{display:flex;gap:8px;margin-top:10px}
+.addr input{flex:1;background:var(--card);border:1.5px solid var(--rule-2);border-radius:99px;padding:11px 16px;outline:none;font-size:15px}
+.addr input:focus{border-color:var(--ink)}
+.empty{text-align:center;padding:44px 20px;border:1.5px dashed var(--rule-2);border-radius:20px;color:var(--ink-3)}
+.empty b{display:block;font-size:17px;font-weight:800;color:var(--ink-2);margin-bottom:6px;letter-spacing:-.02em}
+.empty .btn{margin-top:14px}
+
+/* missing */
+.mc{background:var(--card);border:1.5px solid var(--rule);border-radius:20px;padding:16px 17px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.mc h3{font-size:17px}.mc .by{font-size:12px;color:var(--ink-3)}
+.mc .why{font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.mc .have{font-size:13px;color:var(--ink-2);line-height:1.5;border-left:3px solid var(--tc);padding-left:11px}
+.mc a{color:var(--ink);font-size:13.5px;font-weight:700;text-decoration:none;align-self:flex-start;border-bottom:1.5px solid var(--rule-2)}
+.gate{background:var(--sunk);border-radius:99px;padding:2px 8px;font-size:11px;font-weight:700;color:var(--ink-2)}
+
+/* bottom nav */
+nav.bar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--bg);border-top:1px solid var(--rule);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.bar .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav)}
+.nb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink-3);font-size:11px;font-weight:600;position:relative}
+.nb svg{width:24px;height:24px}
+.nb[aria-selected="true"]{color:var(--ink)}
+.nb .bd{position:absolute;top:8px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--ok);color:#fff;font-size:10.5px;font-weight:800;display:grid;place-items:center}
+.nb .bd:empty,.nb .bd[data-z="1"]{display:none}
+
+/* sheet */
+.veil{position:fixed;inset:0;background:rgba(10,11,12,.55);z-index:80;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px)}
+.veil[hidden]{display:none}
+.sheet{background:var(--bg);width:100%;max-width:720px;max-height:94vh;border-radius:24px 24px 0 0;box-shadow:var(--sh-lg);display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:760px){.veil{align-items:center;padding:24px}.sheet{border-radius:24px;max-height:90vh}}
+.sb{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.hero{position:relative;aspect-ratio:4/3;background:var(--tc);max-height:46vh;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover}
+.hero .noimg{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(150deg,var(--tc),color-mix(in srgb,var(--tc) 55%,#000))}
+.hero .noimg span{font-weight:800;font-size:26px;color:#fff;letter-spacing:-.02em}
+.hero .x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:99px;background:rgba(255,255,255,.94);color:#121314;display:grid;place-items:center;font-size:18px;z-index:2}
+.hero .grab{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:40px;height:4px;border-radius:99px;background:rgba(255,255,255,.7)}
+.sc{padding:18px 20px 24px}
+.sc h2{font-size:26px;margin-bottom:6px}
+.sc .dek{color:var(--ink-2);font-size:14.5px;margin-bottom:12px}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.macros{display:grid;grid-template-columns:repeat(4,1fr);border:1.5px solid var(--rule);border-radius:16px;overflow:hidden;margin-bottom:18px}
+.macros div{padding:10px 12px;border-right:1.5px solid var(--rule)}.macros div:last-child{border-right:none}
+.macros .k{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.macros .v{font-size:19px;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+.hint{background:var(--band);border-left:3px solid var(--tc);border-radius:0 14px 14px 0;padding:12px 15px;font-size:13.5px;line-height:1.55;color:var(--ink-2);margin:0 0 20px}
+.hint b{color:var(--ink)}
+.sh{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+.ig{list-style:none;margin:0 0 6px;padding:0}
+.ig li{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule);font-size:14.5px;line-height:1.35}
+.ig li:last-child{border-bottom:none}
+.ig .q{font-weight:800;min-width:66px;flex:none}
+.ig .nt{color:var(--ink-3);font-size:13px}
+.gh{font-weight:800;font-size:14px;margin:16px 0 4px;letter-spacing:-.01em}
+.gh:first-child{margin-top:0}
+.steps{list-style:none;counter-reset:s;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:14px}
+.steps li{counter-increment:s;display:flex;gap:13px;font-size:14.5px;line-height:1.6}
+.steps li::before{content:counter(s);font-weight:800;font-size:12px;width:24px;height:24px;flex:none;border-radius:99px;background:var(--btn);color:var(--btn-ink);display:grid;place-items:center;margin-top:2px}
+.src{font-size:12.5px;color:var(--ink-3);line-height:1.7;border-top:1px solid var(--rule);padding-top:14px}
+.src a{color:var(--ink);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--rule-2)}
+.foot{padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--rule);background:var(--bg);display:flex;gap:10px;align-items:center}
+.foot .stp{background:var(--sunk);color:var(--ink)}.foot .stp button{color:var(--ink)}.foot .stp button:hover{background:var(--card)}
+.foot .btn{flex:1}
+.pk{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--rule);width:100%}
+.pk:last-child{border-bottom:none}
+.pk .th{width:56px;height:56px;border-radius:14px;overflow:hidden;background:var(--tc);flex:none}
+.pk .th img{width:100%;height:100%;object-fit:cover}
+.pk b{display:block;font-size:15px;font-weight:700;line-height:1.2}
+.pk span{font-size:12.5px;color:var(--ink-3)}
+.pk .chk{margin-left:auto;color:var(--ok)}
+.toast{position:fixed;bottom:calc(var(--nav) + 14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--btn);color:var(--btn-ink);
+  padding:11px 20px;border-radius:99px;font-size:13.5px;font-weight:600;box-shadow:var(--sh);max-width:92vw;text-align:center}
+.toast[hidden]{display:none}
+.hdr{margin-bottom:18px}
+.hdr p{margin:6px 0 0;color:var(--ink-2);font-size:14.5px;line-height:1.5;max-width:60ch}
+</style>
+
+<div class="app">
+  <div class="top">
+    <h1>Reel Kitchen</h1>
+    <div class="wk" id="wk" hidden>
+      <button id="wp" aria-label="Previous week">←</button>
+      <div class="lab"><b id="wl">This week</b><span id="wd"></span></div>
+      <button id="wn" aria-label="Next week">→</button>
+    </div>
+    <button class="ico" id="theme" aria-label="Switch theme">◐</button>
+  </div>
+  <main>
+    <section class="panel" id="p-book"></section>
+    <section class="panel" id="p-week" hidden></section>
+    <section class="panel" id="p-shop" hidden></section>
+    <section class="panel" id="p-gone" hidden></section>
+  </main>
+</div>
+
+<nav class="bar" role="tablist"><div class="in">
+  <button class="nb" role="tab" data-tab="book" aria-selected="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>The Book</button>
+  <button class="nb" role="tab" data-tab="week" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>This Week<span class="bd" id="b-week"></span></button>
+  <button class="nb" role="tab" data-tab="shop" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>Shopping<span class="bd" id="b-shop"></span></button>
+  <button class="nb" role="tab" data-tab="gone" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>Missing<span class="bd" id="b-gone"></span></button>
+</div></nav>
+
+<div class="veil" id="veil" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ═══════════ TAXONOMY — coldest to hottest ═══════════ */
+const TYPES=[
+ {id:"freezer-raw",label:"Freezer kits, raw",short:"Freezer · raw",c:"var(--t1)",desc:"Assembled uncooked and frozen flat. From the freezer straight into the pot — no thawing."},
+ {id:"freezer-cooked",label:"Batch-cooked, frozen",short:"Freezer · cooked",c:"var(--t2)",desc:"Cooked through on prep day, frozen in portions. Reheat and eat."},
+ {id:"fridge",label:"Fridge staples",short:"Fridge",c:"var(--t3)",desc:"Made once, keeps five to seven days cold. The sides and pickles that rescue a dull plate."},
+ {id:"nocook",label:"Cold assembly",short:"No cook",c:"var(--t4)",desc:"Nothing cooks at the moment of eating. You roll, stack or toss what's already prepped."},
+ {id:"soup",label:"Soups & broths",short:"Soup",c:"var(--t5)",desc:"One pot, mostly unattended, better on day two. Freezes well."},
+ {id:"oven",label:"Oven & air fryer",short:"Oven",c:"var(--t6)",desc:"Hands-off heat. Load the tray, set a timer, walk away."},
+ {id:"fresh",label:"Cook tonight",short:"Fresh",c:"var(--t7)",desc:"Made and eaten the same day, usually in half an hour."}
+];
+const T=Object.fromEntries(TYPES.map(t=>[t.id,t]));
+const AISLES=[["produce","Fruit & veg"],["meat","Meat & fish"],["dairy","Dairy & eggs"],["bakery","Bread & wraps"],["asian","World foods"],["pantry","Pantry & dry goods"],["frozen","Freezer aisle"],["other","Other"]];
+
+/* ═══════════ RECIPES — i: [qty|null, unit, name, aisle, note?]  ["G","","Heading"] starts a group ═══════════ */
+const R=[
+{id:"dakjuk",n:"Frozen Dakjuk Kit",sub:"Korean chicken and rice porridge",t:"freezer-raw",by:"joexfitness",byn:"Joe Chu",d:"2026-05-13",lang:"EN",url:"https://www.instagram.com/p/DYS7imCv3yv/",dir:"2026-05-13_joexfitness_DYS7imCv3yv",serves:2,mins:10,m:{kcal:436,p:40,c:27,f:19},
+ prep:"Assemble in containers and freeze overnight. Cooks from frozen in about ten minutes.",
+ i:[[1,"cup","cooked rice","pantry"],[2,"cups","chicken bone broth","pantry"],[3,"cloves","garlic","produce"],[0.25,"cup","onion","produce"],[340,"g","chicken thigh","meat","¾ lb, boneless, thinly sliced"],[1,"tbsp","sesame oil","asian"],[1,"","carrot","produce","small"],[0.5,"","green onion","produce"],[1,"tsp","sesame seeds","asian"],[0.5,"tbsp","soy sauce","asian"],[null,"","salt and pepper","pantry"]],
+ s:["Dice the onion, green onion and carrot small, and mince the garlic.","Thinly slice the chicken.","Blend the bone broth with the cooked rice for five to ten seconds to make a rice porridge.","Into each container, layer half of everything: sesame oil, onion, green onion, garlic, carrot, rice porridge, sliced chicken.","Seal and freeze overnight.","To eat, microwave fifteen seconds to loosen the block from the container.","Drop the frozen block into a pot with half a cup of water over high heat.","Stir constantly as it melts, then lower to medium-low and simmer so the rice doesn't catch.","Season with salt and pepper, and finish with soy sauce and sesame seeds."],
+ note:"The whole point is the frozen block. It goes from freezer to boiling water with no thawing step at all."},
+{id:"bulgogi-freeze",n:"Freezer Beef Bulgogi",sub:"a marinade kit that makes eight dinners",t:"freezer-raw",by:"shreddedandfed",byn:"Shredded & Fed",d:"2026-06-11",lang:"EN",url:"https://www.instagram.com/p/DZdTzjHPnkQ/",url2:"https://www.instagram.com/p/DdmFqUhtHyD/",dir:"2026-06-11_shreddedandfed_DZdTzjHPnkQ",serves:8,mins:15,m:{kcal:251,p:39,c:6,f:9},
+ prep:"Bag it raw and freeze. Keeps three to four months. Thaw the bag the night before.",
+ i:[[1320,"g","petite top sirloin","meat","thinly sliced"],[1,"tbsp","sesame oil","asian"],[3,"tbsp","gochujang","asian"],[1,"tbsp","brown sugar","pantry"],[0.75,"cup","soy sauce","asian"],[9,"cloves","garlic","produce","minced"],[3,"tbsp","ginger","produce","minced"],[6,"","green onions","produce","sliced"]],
+ s:["Combine all the marinade ingredients.","Portion the beef into zip-top bags and divide the marinade evenly between them.","Mix well so every slice is coated.","Marinate one to two hours before cooking, or freeze immediately.","Serve with rice or noodles, or toss into a stir-fry."],
+ note:"Posted twice — the September freezer restock lists 1.32 kg of beef and corrected macros (251 kcal, 39 g protein), which is what's shown here. Her own note from the first post: she ran out of gochujang and used chilli crisp; it worked, but gochujang is better."},
+{id:"butterchicken",n:"Butter Chicken Freezer Marinade",sub:"ten portions of yogurt-marinated thighs",t:"freezer-raw",by:"shreddedandfed",byn:"Shredded & Fed",d:"2026-09-22",lang:"EN",url:"https://www.instagram.com/p/DdmFqUhtHyD/",dir:"2026-09-22_shreddedandfed_DdmFqUhtHyD",serves:10,mins:15,m:{kcal:270,p:44,c:4,f:8},
+ prep:"Marinate, bag, freeze raw. Later it becomes a ten-portion curry — cooked, portioned and frozen again as complete meals.",
+ i:[[2000,"g","chicken thighs","meat","boneless, skinless"],[2,"tsp","Kashmiri chilli powder","asian","or paprika"],[1,"tsp","salt","pantry"],[3,"tbsp","lemon juice","produce"],[365,"g","0% Greek yogurt","dairy"],[3,"tbsp","ginger-garlic paste","asian"],[0.5,"tsp","turmeric","pantry"],[1,"tbsp","garam masala","pantry"],[2,"tsp","cumin","pantry"],[4,"tsp","ground coriander","pantry"],[4,"tsp","kasuri methi","asian","dried fenugreek leaves"]],
+ s:["Mix everything except the chicken into a marinade.","Coat the thighs thoroughly.","Bag in portions and freeze raw.","When you want the curry, thaw, cook the chicken, and finish in a tomato-cream sauce — the full curry (383 kcal, 47 g protein) is on her page."],
+ note:"<b>Marinade only.</b> The post gives the marinade and the macros for the marinated chicken; the sauce for the finished curry is a separate recipe on her page. Her logic: batch all the tedious chopping and marinating now, then <em>decide later</em> what to cook."},
+{id:"tandoori",n:"Tandoori Chicken Freezer Kit",sub:"eight servings, pull from the freezer for quick dinners",t:"freezer-raw",by:"shreddedandfed",byn:"Shredded & Fed",d:"2026-09-22",lang:"EN",url:"https://www.instagram.com/p/DdmFqUhtHyD/",dir:"2026-09-22_shreddedandfed_DdmFqUhtHyD",serves:8,mins:15,m:{kcal:369,p:56,c:5,f:14},
+ prep:"Marinate, bag, freeze raw. Thaw and cook fresh whenever you want it.",
+ i:[[1800,"g","chicken thighs","meat","boneless, skinless"],[2,"cups","nonfat Greek yogurt","dairy"],[4,"cloves","garlic","produce","minced"],[5,"cm","ginger","produce","2 inches, minced"],[2,"tsp","cumin","pantry"],[2,"tsp","cinnamon","pantry"],[2,"tsp","garam masala","pantry"],[2,"tsp","ground coriander","pantry"],[2,"tsp","turmeric","pantry"],[2,"tsp","smoked paprika","pantry"],[2,"tsp","salt","pantry","1½–2 tsp"]],
+ s:["Mix the yogurt with the garlic, ginger and all the spices.","Coat the chicken thighs thoroughly.","Bag in portions and freeze raw.","To cook: thaw overnight, then grill, roast at high heat or air-fry until charred at the edges and cooked through."],
+ note:"From the same freezer restock as the butter chicken and the bulgogi: 36 high-protein portions across four recipes, all frozen raw. <em>Prep now, decide later.</em>"},
+{id:"arroces",n:"Arroces Congelados",sub:"tres bolsas de arroz para el congelador",t:"freezer-raw",by:"elpisovegano",byn:"Eduardo y Francesca",d:"2026-07-01",lang:"ES",url:"https://www.instagram.com/p/DaP0d1oAriq/",dir:"2026-07-01_elpisovegano_DaP0d1oAriq",serves:12,mins:20,
+ prep:"Se congela crudo. Se cocina desde congelado, en una sola olla, en veinte minutos.",
+ i:[["G","","Combinación 1 — calabacín, garbanzos y cúrcuma"],[320,"g","arroz","pantry"],[2,"botes","garbanzos cocidos","pantry"],[4,"","calabacines","produce"],[1,"manojo","perejil","produce"],[1,"","limón","produce","solo la ralladura"],[4,"cdas","aceitunas","pantry"],[4,"cdtas","cúrcuma","pantry"],["G","","Combinación 2 — pesto, alubias blancas y judías verdes"],[320,"g","arroz","pantry"],[2,"botes","alubias blancas","pantry"],[300,"g","judías verdes","produce"],[4,"cdas","pesto","pantry"],["G","","Combinación 3 — judiones, pimientos y azafrán"],[320,"g","arroz","pantry"],[2,"botes","judiones","pantry"],[2,"","pimientos","produce"],[12,"","tomates secos","pantry"],[2,"sobres","azafrán","pantry"],["G","","Para terminar"],[null,"","aceite de oliva virgen extra","pantry"],[null,"","sal","pantry"]],
+ s:["Mete todos los ingredientes de una combinación en una bolsa hermética, ciérrala y guárdala en el congelador.","Cuando quieras prepararlo, vuelca el contenido de la bolsa <em>aún congelado</em> en una olla.","Cúbrelo con agua y sala.","Cocina veinte minutos.","Termina con un chorrito de aceite de oliva."],
+ note:"Solo se ensucia una olla. Si tienes sofrito congelado en cubitos, úsalo de base y el plato final gana muchísimo."},
+{id:"smashtacos",n:"Freezer Smash Burger Tacos",sub:"cooked straight from frozen",t:"freezer-raw",by:"ilenenasnutrition",byn:"Ilene Nasseri",d:"2026-08-07",lang:"EN",url:"https://www.instagram.com/p/DbuEAOqtpMW/",dir:"2026-08-07_ilenenasnutrition_DbuEAOqtpMW",serves:5,mins:8,
+ prep:"Press raw beef onto tortillas, stack with parchment, freeze flat. No thawing.",
+ i:[[5,"","low-carb street taco tortillas","bakery"],[280,"g","lean ground beef","meat","10 oz — 2 oz per taco"],[null,"","sliced cheddar cheese","dairy"],[null,"","burger toppings","produce","lettuce, pickles, onion, sauce"]],
+ s:["Roll two ounces of ground beef into a ball and press it evenly onto each tortilla.","If you have freezer space, freeze them individually on a sheet pan first, then transfer to a bag.","Otherwise, lay parchment over the meat side of each taco, stack them, bag them and freeze flat.","To cook, with no thawing: meat side down on a hot skillet until the beef is cooked through.","Flip to crisp the tortilla, add cheddar, then finish with your toppings."],
+ note:"The parchment-stack method takes almost no freezer space, which is why the creator prefers it."},
+{id:"pancakes",n:"Freezer Protein Pancakes",sub:"cottage cheese, and no protein powder",t:"freezer-cooked",by:"noahperlofit",byn:"Noah Perlo",d:"2026-07-08",lang:"EN",url:"https://www.instagram.com/p/DahQKqnBLVy/",dir:"2026-07-08_noahperlofit_DahQKqnBLVy",serves:30,mins:60,m:{kcal:138,p:10,c:15.5,f:4},
+ prep:"One hour on a Sunday makes thirty. Freeze them, then toaster or microwave on the day.",
+ i:[[6,"cups","low-fat cottage cheese","dairy"],[12,"","eggs","dairy"],[3,"tsp","vanilla extract","pantry"],[12,"tbsp","sugar-free maple syrup","pantry"],[3.75,"cups","self-rising flour","pantry"],[180,"g","stevia chocolate chips","pantry"]],
+ s:["Blend the cottage cheese, eggs, vanilla and maple syrup until smooth.","Fold in the self-rising flour, then the chocolate chips.","Cook on a griddle in batches until golden on both sides.","Cool completely, then freeze in stacks with parchment between them."],
+ note:"The macros are <b>per pancake</b>, and the recipe makes thirty. <b>Divide everything by three</b> for a normal batch of ten."},
+{id:"spmeatballs",n:"Sweet Potato Beef Meatballs",sub:"no binder, freezer-friendly, toddler-approved",t:"freezer-cooked",by:"thatgeorgelife",byn:"Ashton George",d:"2026-09-13",lang:"EN",url:"https://www.instagram.com/p/DdOqfZpxLIp/",dir:"2026-09-13_thatgeorgelife_DdOqfZpxLIp",serves:4,mins:30,
+ prep:"Bake once, then fridge three to four days or freeze. Flatten into patties for easier serving.",
+ i:[[450,"g","ground beef","meat","1 lb"],[0.75,"cup","cooked sweet potato","produce","mashed"],[0.5,"cup","fresh spinach","produce","finely chopped — or ¼ cup frozen, squeezed dry"],[1,"","egg","dairy"],["G","","Optional seasonings"],[0.5,"tsp","garlic powder","pantry"],[0.5,"tsp","onion powder","pantry"],[0.25,"tsp","paprika","pantry"],[0.5,"tsp","dried oregano","pantry"]],
+ s:["Heat the oven to 200 °C (400 °F) and line a baking sheet with parchment.","Put the ground beef, mashed sweet potato, spinach, egg and any seasonings in a bowl. Gently mix until evenly combined.","Roll into small meatballs on the tray, or flatten slightly into little patties.","Bake 12–15 minutes, until the beef reaches 71 °C (160 °F) inside.","Cool before serving. Store in the fridge three to four days, or freeze."],
+ note:"Written as a baby-led-weaning recipe, but it's just a very good freezer meatball. No flour or breadcrumbs needed — the sweet potato and egg hold them together."},
+{id:"burritos",n:"BBQ Bourbon Chicken Burritos",sub:"sixteen freezer burritos with peach salsa",t:"freezer-cooked",by:"noahperlofit",byn:"Noah Perlo",d:"2026-08-17",lang:"EN",url:"https://www.instagram.com/p/DcJdyUyBJ7o/",dir:"2026-08-17_noahperlofit_DcJdyUyBJ7o",serves:16,mins:75,m:{kcal:675,p:49,c:68,f:23},
+ prep:"A big Sunday cook. Wrap and freeze — they keep up to six months.",
+ i:[["G","","Chicken"],[2270,"g","chicken thighs","meat","5 lb, boneless and skinless"],[2,"tbsp","salt","pantry"],[1,"tbsp","black pepper","pantry"],[1,"tbsp","garlic powder","pantry"],[1,"tbsp","smoked paprika","pantry"],[1.25,"cups","bourbon BBQ sauce","pantry"],["G","","Peach salsa"],[4,"","peaches","produce","large, diced"],[2,"","poblano peppers","produce","diced"],[2,"","sweet onions","produce","diced"],[1,"tbsp","olive oil","pantry"],[0.25,"cup","stevia brown sugar substitute","pantry"],[1,"tsp","smoked paprika","pantry"],[1,"tsp","salt","pantry"],["G","","Garlic herb rice"],[4,"cups","jasmine rice","pantry","uncooked"],[1,"tbsp","butter","dairy"],[2,"tbsp","garlic","produce"],[null,"","dried parsley","pantry"],[null,"","dried oregano","pantry"],["G","","Creamy bourbon BBQ sauce"],[0.5,"cup","light mayonnaise","pantry"],[0.5,"cup","nonfat Greek yogurt","dairy"],[0.5,"cup","bourbon BBQ sauce","pantry","sugar-free if possible"],[2,"tbsp","Dijon mustard","pantry"],[1,"tbsp","apple cider vinegar","pantry"],[1,"tbsp","hot honey","pantry"],[null,"","Worcestershire sauce","pantry","to taste"],["G","","To assemble"],[16,"","large low-carb tortillas","bakery"],[4,"cups","shredded Mexican cheese","dairy","¼ cup each"]],
+ s:["Trim the fat off the chicken thighs, then season with salt, pepper, garlic powder and smoked paprika.","Cook the chicken through, then toss it in the bourbon BBQ sauce.","For the salsa, sauté the peaches, poblanos and onions in olive oil with the brown sugar substitute, paprika and salt until caramelised.","Cook the jasmine rice, then stir through butter, garlic, parsley and oregano.","Whisk the creamy sauce ingredients together.","Build each burrito: rice, chicken, salsa, a quarter cup of cheese, a spoon of creamy sauce. Roll tight.","Wrap individually and freeze. Reheat from frozen."],
+ note:"Trimming the fat off the thighs and using less oil is where the calorie saving comes from."},
+{id:"kungpao",n:"Meal Prep Kung Pao Chicken",sub:"ten portions in an afternoon",t:"freezer-cooked",partial:true,by:"noahperlofit",byn:"Noah Perlo",d:"2026-08-25",lang:"EN",url:"https://www.instagram.com/p/DccTHlkBOYG/",dir:"2026-08-25_noahperlofit_DccTHlkBOYG",serves:10,mins:60,m:{kcal:470,p:47,c:36,f:15.3},
+ prep:"Batch cook, portion, then fridge or freeze.",
+ i:[["G","","Chicken"],[2000,"g","chicken breast","meat","diced"],[100,"g","cornstarch","pantry"],[10,"g","baking powder","pantry"],[2,"tsp","kosher salt","pantry"],[2,"tsp","black pepper","pantry"],[2,"tbsp","garlic powder","pantry"],["G","","Kung pao sauce"],[180,"g","low-sodium soy sauce","asian"],[120,"g","Chinese black vinegar","asian"],[80,"g","rice vinegar","asian"],[80,"g","brown sugar substitute","pantry"],[60,"g","hoisin sauce","asian"],[30,"g","cornstarch","pantry"],[300,"g","water","other"],[14,"g","sesame oil","asian"],[17,"g","dried red chillies","asian","15–20 g, broken up"],["G","","To serve"],[null,"","cooked rice","pantry"]],
+ s:["Toss the diced chicken with the cornstarch, baking powder, salt, pepper and garlic powder.","Fry or air-fry until golden and cooked through.","Whisk all the sauce ingredients together and simmer until thickened.","Toss the chicken through the sauce.","Portion over rice into ten containers."],
+ note:"<b>Partly reconstructed.</b> The post gave the chicken and the sauce but no vegetables and no method. Classic kung pao adds diced bell pepper, spring onion and roasted peanuts."},
+{id:"chipotle",n:"Slow Cooker Chipotle Lime Chicken",sub:"twenty minutes of work, ten dinners",t:"freezer-cooked",by:"noahperlofit",byn:"Noah Perlo",d:"2026-08-28",lang:"EN",url:"https://www.instagram.com/p/DcmWbcwBBps/",dir:"2026-08-28_noahperlofit_DcmWbcwBBps",serves:10,mins:20,m:{kcal:325,p:32,c:10,f:17.4},
+ prep:"Twenty minutes of prep, then the slow cooker does the rest. Freezes for about four months.",
+ i:[[1590,"g","chicken thighs","meat","3.5 lb, boneless and trimmed"],[1,"","yellow onion","produce","large, quartered"],[5,"cloves","garlic","produce"],[2,"","chipotle peppers in adobo","pantry"],[1,"cup","adobo sauce","pantry"],[2,"","limes","produce","juice"],[1,"","lime","produce","zest"],[0.25,"tbsp","honey","pantry"],[2,"tbsp","tomato paste","pantry"],[1,"cup","low-sodium chicken broth","pantry"],[2,"tsp","ground cumin","pantry"],[2,"tsp","smoked paprika","pantry"],[1,"tsp","dried oregano","pantry"],[1,"tbsp","kosher salt","pantry"],[1,"tsp","black pepper","pantry"],[0.25,"cup","fresh cilantro","produce","chopped, to finish"],[0.5,"","lime","produce","juice, to finish"]],
+ s:["Trim the fat off the chicken thighs.","Put everything except the cilantro and the finishing lime into the slow cooker.","Press start and leave it.","Shred the chicken in its sauce when it's done.","Finish with chopped cilantro and the juice of half a lime.","Portion, then freeze or refrigerate."],
+ note:"No cooking oil at all — the chicken cooks in its own liquid plus the broth and adobo."},
+{id:"bagels",n:"Cottage Cheese Bagels",sub:"no yeast, and they freeze beautifully",t:"freezer-cooked",merged:true,by:"purahealthyvida + modernflavour",byn:"Sara y Alex · Laura & Alex",d:"2026-09-09",lang:"ES/EN",url:"https://www.instagram.com/p/DdEreojugVB/",url2:"https://www.instagram.com/p/DdBvXbKCd1Z/",dir:"2026-09-09_modernflavour_DdEreojugVB",dir2:"2026-09-08_purahealthyvida_DdBvXbKCd1Z",serves:4,mins:30,
+ prep:"Double batch on Sunday. Cool, slice in half, freeze. Straight into the toaster.",
+ i:[[240,"g","cottage cheese","dairy","blended — 1 cup"],[150,"g","plain flour","pantry","or oat, spelt or wholemeal"],[1,"tsp","baking powder","pantry"],[0.5,"tsp","salt","pantry"],[1,"","egg","dairy","beaten, for the wash"],[null,"","everything bagel seasoning or seeds","pantry"]],
+ s:["Mix the blended cottage cheese, flour, baking powder and salt until a thick dough forms.","Knead one to two minutes on a floured surface. If it sticks, add a little more flour.","Cut into four. Roll each into a rope and join the ends into a bagel.","Brush with egg wash and top with seeds or everything seasoning.","Oven at 190 °C for 20–25 minutes, or air fryer at 180 °C for 12–14 minutes.","Cool, slice in half, and freeze."],
+ note:"<b>Two near-identical posts merged.</b> Same ratio in both; the air-fryer timing and freeze-and-toast trick come from @purahealthyvida, the everything-bagel finish from @modernflavour."},
+{id:"frascos",n:"Los Dos Frascos",sub:"encurtidos rápidos en dos tarros",t:"fridge",by:"kulinaria.recetas",byn:"Agus Liporace",d:"2026-07-02",lang:"ES",url:"https://www.instagram.com/p/DaTgc1wB_to/",dir:"2026-07-02_kulinaria.recetas_DaTgc1wB_to",serves:12,mins:20,
+ prep:"Veinte minutos una vez. Mejora cada día en la nevera.",
+ i:[["G","","Base líquida, para los dos"],[2,"tazas","agua","other"],[2,"tazas","vinagre","pantry"],[2,"dientes","ajo","produce"],[2,"cdas","azúcar","pantry"],[0.5,"cda","sal","pantry"],[null,"","granos de pimienta","pantry"],["G","","Frasco 1 — ensaladas y wraps"],[1,"","zanahoria","produce","chica, en bastoncitos"],[null,"","repollo","produce","un pedacito, mejor colorado"],[1,"","cebolla morada","produce"],[0.5,"","zucchini","produce"],[null,"","mostaza en grano","pantry","opcional"],["G","","Frasco 2 — sándwiches y tostadas"],[1,"","cebolla morada","produce"],[0.5,"","zucchini","produce"],[1,"","pepino","produce","chico, en rodajas finas"],[null,"","tomillo","produce"],[null,"","laurel","pantry"]],
+ s:["En una olla pon agua, vinagre, sal, azúcar, ajo y pimienta. Deja a fuego bajito.","Mientras, corta las verduras: pepino en rodajitas finas, medio zucchini en rodajitas y medio en bastoncitos, cebolla morada bien fina, zanahoria en bastoncitos y repollo fino.","Cuando el líquido esté caliente pero sin hervir, arma los frascos <em>por capas</em>.","Ve aplastando para que entre la mayor cantidad de verdura posible, y rellena hasta el tope.","Todas las verduras tienen que quedar bien cubiertas por el líquido.","A la heladera. Cuanto más lo dejes, más rico."],
+ note:"Un par de horas y ya se pueden comer, pero mejoran con los días. Van en wraps, en sándwiches y en cualquier ensalada sosa."},
+{id:"oimuchim",n:"Spicy Cucumber Kimchi",sub:"oi muchim, the Korean side dish",t:"fridge",by:"joexfitness",byn:"Joe Chu",d:"2026-08-28",lang:"EN",url:"https://www.instagram.com/p/DcmEDK3jfPu/",dir:"2026-08-28_joexfitness_DcmEDK3jfPu",serves:4,mins:20,m:{kcal:85,p:3,c:12,f:4},
+ prep:"Make it once and eat it all week. The flavour comes from overnight marination.",
+ i:[[7,"","Persian cucumbers","produce"],[0.5,"tbsp","salt","pantry"],[1,"tbsp","rice vinegar","asian"],[1,"tbsp","garlic","produce","minced"],[1,"tbsp","sesame oil","asian"],[1.5,"tbsp","gochugaru","asian"],[1,"tbsp","soy sauce","asian"],[1,"tbsp","brown sugar","pantry"],[1,"tsp","sesame seeds","asian"]],
+ s:["Slice the cucumbers down the middle, then chop into pieces roughly half an inch thick.","Toss with the salt and leave fifteen minutes to draw out the liquid.","Drain, rinse off the salt, and pat dry.","Mix the rice vinegar, garlic, sesame oil, gochugaru, soy sauce, brown sugar and sesame seeds.","Toss through the cucumbers and seal in an airtight container."],
+ note:"Under ten ingredients, the same three base flavours every time — soy, garlic, sesame oil — and <b>designed</b> to be stored and eaten across the week."},
+{id:"springrolls",n:"Bulgogi Spring Rolls",sub:"rice paper, and 258 calories",t:"nocook",by:"joexfitness",byn:"Joe Chu",d:"2026-06-22",lang:"EN",url:"https://www.instagram.com/p/DZ5s2QVSiMS/",dir:"2026-06-22_joexfitness_DZ5s2QVSiMS",serves:2,mins:20,m:{kcal:258,p:20,c:36,f:3},
+ prep:"The beef wants thirty minutes to two hours marinating. Then you roll cold and eat cold.",
+ i:[["G","","Filling"],[6,"sheets","rice paper","asian"],[6,"leaves","green leaf lettuce","produce"],[1.5,"cups","kimchi","asian"],[1,"","Persian cucumber","produce"],["G","","Bulgogi"],[0.5,"","yellow onion","produce","thinly sliced"],[140,"g","eye of round beef","meat","5 oz, shabu-shabu cut"],[2,"tsp","honey","pantry"],[1,"tsp","garlic","produce","minced"],[1.5,"tbsp","soy sauce","asian"],[0.5,"tsp","black pepper","pantry"],[0.5,"tsp","sesame seeds","asian"],[null,"","spray oil","pantry"]],
+ s:["Thinly slice the yellow onion and the cucumber.","Mix the onion, beef, honey, garlic, soy sauce, black pepper and sesame seeds. Rest thirty minutes to two hours in the fridge.","Sauté the marinated beef in a spray-oiled pan until cooked through.","Wet a sheet of rice paper and shake off the excess water.","Stack a lettuce leaf, kimchi, cucumber and the beef, then roll it up.","Repeat for the remaining sheets, then slice each roll in half."],
+ note:"Endlessly swappable — bored of the filling, change it. Three rolls is one serving."},
+{id:"slopbowl",n:"Hot Honey Chicken Slop Bowl",sub:"the New York chopped salad, made at home",t:"nocook",by:"mob",byn:"Mob · Elena Silcock",d:"2026-06-11",lang:"EN",url:"https://www.instagram.com/p/DZc9xFNoWry/",dir:"2026-06-11_mob_DZc9xFNoWry",serves:4,mins:50,
+ prep:"Box it up and it keeps three days in the fridge. Dress, chop and toss only just before eating.",
+ i:[["G","","The base"],[1,"","cucumber","produce"],[100,"g","kale","produce"],[600,"g","sweet potatoes","produce"],[1,"tbsp","olive oil","pantry"],[null,"","salt","pantry"],["G","","Chicken"],[1000,"g","boneless skinless chicken thigh","meat"],[1,"tbsp","chilli powder","pantry"],[1,"tbsp","plain flour","pantry"],[1,"tsp","chilli flakes","pantry"],[2,"tbsp","honey","pantry"],[2,"tbsp","red wine vinegar","pantry"],[1,"tbsp","olive oil","pantry"],["G","","The pickle"],[1,"","red onion","produce"],[2,"tbsp","red wine vinegar","pantry"],[1,"tsp","honey","pantry"],[null,"","salt","pantry"],["G","","Crazy feta"],[200,"g","feta","dairy"],[2,"","fresh jalapeños","produce"],[1,"tsp","olive oil","pantry"],["G","","Coriander quinoa"],[500,"g","microwaveable quinoa","pantry","2 × 250 g pouches"],[20,"g","fresh coriander","produce"],[0.25,"tsp","olive oil","pantry"],["G","","Dressing"],[4,"tbsp","olive oil","pantry"],[1.5,"tbsp","red wine vinegar","pantry"],[1,"tsp","honey","pantry"],[1,"tsp","wholegrain mustard","pantry"],[null,"","salt and black pepper","pantry"]],
+ s:["Heat the oven to 200 °C. Dice the sweet potatoes into 2 cm chunks — no need to peel. Tip onto a large tray, drizzle with olive oil, season and toss.","On a separate metal tray, scatter the chilli powder, flour and a big pinch of salt. Toss the chicken thighs in it, drizzle with olive oil and toss again. Roast both trays 35–40 minutes.","Meanwhile, finely slice the red onion into a bowl with the vinegar, honey and a pinch of salt. Scrunch with your hands and leave to quick-pickle.","Toast the chilli flakes in a dry pan about thirty seconds, then add the honey and vinegar and cook a minute until bubbling.","Once the chicken is cooked, coat it in that glaze and return to the oven five minutes until sticky.","Finely chop the jalapeños. Crumble the feta into a bowl, add the jalapeños and crush together with a fork. Drizzle with oil and season.","Shake all the dressing ingredients together and season.","Cook the quinoa pouches, tip into a bowl, stir through chopped coriander and a little oil, and season.","Chunk the cucumber. Massage the kale with a spoonful of dressing until softened.","Kale and coriander quinoa in the base, then divide between four containers. Top with sweet potato, chicken, cucumber and pickled onion; spoon on the spicy feta. Keeps three days. Dress, chop and toss just before eating."],
+ note:"The <em>chop it in the bowl with scissors</em> trick is from the video, and it's the whole point: that's what the salad bars do before they serve you."},
+{id:"espinaca",n:"Sopa Crema de Espinaca",sub:"con municiones y mucho queso",t:"soup",by:"lasrecetasdesimon",byn:"Andrés Simón",d:"2026-05-30",lang:"ES",url:"https://www.instagram.com/p/DY-pKtPq6rd/",dir:"2026-05-30_lasrecetasdesimon_DY-pKtPq6rd",serves:4,mins:30,
+ prep:"Una olla, media hora. La pasta se cuece dentro de la sopa.",
+ i:[[1,"paquete","espinaca","produce","un atado grande"],[1,"cda","queso crema","dairy"],[1,"puñado","queso parmesano","dairy"],[2,"dientes","ajo","produce"],[1,"","cebolla","produce"],[200,"g","fideos munición","pantry"],[null,"","queso cremoso","dairy","para servir"],[null,"","sal, pimienta y nuez moscada","pantry"],[null,"","aceite de oliva","pantry"],[null,"","ají molido","pantry","para servir"],[null,"","crema","dairy","un hilito, para servir"]],
+ s:["Corta la cebolla y el ajo bien chiquitito y saltéalos con un poquito de aceite de oliva.","Cuando estén doraditos, agrega la espinaca rota con la mano y cubre con agua.","Cocina diez o quince minutos, hasta que esté todo bien tierno.","Suma queso crema y parmesano, y mixea hasta que quede cremoso.","Añade las municiones, sal, pimienta y nuez moscada, y cocina el tiempo que diga el paquete.","Emplata con queso cremoso por encima, un hilito de crema y un poquito de ají molido."],
+ note:"Es sopa y pasta a la vez, así que queda una comida completa."},
+{id:"pollosinagua",n:"Sopa de Pollo Sin Agua",sub:"el caldo se hace solo",t:"soup",by:"lasrecetasdesimon",byn:"Andrés Simón",d:"2026-07-31",lang:"ES",url:"https://www.instagram.com/p/DbeQIBixhDo/",dir:"2026-07-31_lasrecetasdesimon_DbeQIBixhDo",serves:6,mins:120,
+ prep:"Dos horas a fuego bajísimo, sin vigilar. Perfecta para congelar en porciones.",
+ i:[[1,"","pollo entero","meat"],[0.5,"","repollo blanco","produce"],[2,"dientes","ajo","produce"],[2,"","zanahorias","produce"],[null,"","jengibre","produce"],[2,"","cebollas de verdeo","produce"],[2,"","cebollas","produce"],[null,"","sal","pantry"]],
+ s:["Pon en la olla la cebolla, la zanahoria, el repollo blanco, la cebolla de verdeo y el pollo entero.","Añade jengibre, ajo y sal. Nada más que eso.","<b>No le pongas ni una gota de agua.</b> Tapa la olla.","Fuego bien bajito, una hora y media o dos. El líquido va apareciendo solo.","Al emplatar, saca el hueso y la piel y desmenuza el pollo dentro del caldo."],
+ note:"El caldo sale del propio líquido de las verduras y el pollo."},
+{id:"thaibroth",n:"Yellow Thai Coconut Broth",sub:"with chicken meatballs and a herb salad",t:"soup",by:"mob",byn:"Mob",d:"2026-09-04",lang:"EN",url:"https://www.instagram.com/p/Dc3fWIhy3Rh/",dir:"2026-09-04_mob_Dc3fWIhy3Rh",serves:4,mins:50,
+ prep:"Keep the meatballs and the broth separate. Reheat by simmering the meatballs in the broth.",
+ i:[["G","","Chicken meatballs"],[30,"g","fresh ginger","produce"],[3,"cloves","garlic","produce"],[15,"g","fresh coriander","produce"],[2,"tbsp","Thai yellow curry paste","asian"],[500,"g","chicken mince","meat"],[1,"","egg","dairy"],[40,"g","breadcrumbs","bakery"],[1,"tbsp","fish sauce","asian"],[1,"","lime","produce"],[null,"","vegetable oil","pantry"],["G","","Coconut broth"],[2,"tbsp","Thai yellow curry paste","asian"],[400,"ml","coconut milk","asian","1 can"],[500,"ml","vegetable stock","pantry"],[1,"tbsp","fish sauce","asian"],["G","","Herb salad"],[15,"g","fresh Thai basil","produce"],[15,"g","fresh coriander","produce"],[4,"","spring onions","produce"],["G","","Dressing"],[1,"","lime","produce"],[1,"tbsp","fish sauce","asian"],[0.5,"tsp","caster sugar","pantry"],[1,"","red chilli","produce"],["G","","To serve"],[200,"g","jasmine rice","pantry"],[1,"","lime","produce"]],
+ s:["Grate the ginger and garlic. Chop the coriander stalks and leaves, setting the leaves aside for garnish.","Heat a glug of oil in a heavy pan over medium heat. Fry the curry paste two minutes, then transfer to a large bowl.","Add the chicken mince, coriander stalks, ginger, garlic, egg, breadcrumbs, fish sauce and the lime zest — keep the zested lime. Add salt, mix until sticky, and form sixteen balls of about 40 g.","Fry the meatballs in batches in more oil over medium-high heat 5–8 minutes until golden all over. Set aside.","In the same pan, fry the second lot of curry paste one to two minutes, then add the coconut milk and stock. Boil, then simmer ten minutes. Squeeze in the reserved lime and season with salt and fish sauce.","Cook the rice following the packet.","For the salad, slice the spring onions into strips and pick the herb leaves into a bowl. Slice the chilli into a separate bowl with the other dressing ingredients, stir until the sugar dissolves, and pour over the salad.","Before serving, drop the meatballs into the broth and gently reheat. Serve over rice with the salad and extra lime."],
+ note:"<b>Keep broth and meatballs apart</b>, then simmer the meatballs in the broth as you reheat — it keeps them light and pushes the broth into the meat."},
+{id:"calabacinfrio",n:"Crema Fría de Calabacín",sub:"con quicos, que no son opcionales",t:"soup",by:"la_healthy_chefdemicasa",byn:"Núria Bartolomé",d:"2026-09-10",lang:"ES",url:"https://www.instagram.com/p/DdHdTrFINhK/",dir:"2026-09-10_la_healthy_chefdemicasa_DdHdTrFINhK",serves:4,mins:20,
+ prep:"Se tritura todo en frío, pero necesita entre treinta y sesenta minutos de nevera.",
+ i:[[2,"","calabacines","produce","medianos"],[1,"","aguacate","produce","maduro"],[0.5,"","pepino","produce","pequeño"],[1,"","lima","produce","zumo y ralladura"],[1,"cda","vinagre de manzana","pantry"],[0.5,"","guindilla fresca","produce"],[12,"hojas","cilantro","produce"],[12,"hojas","menta","produce"],[1,"diente","ajo","produce","sin el germen"],[250,"ml","agua fría","other"],[1,"cdta","sal","pantry"],[50,"ml","aceite de oliva virgen extra","pantry"],["G","","Toppings, indispensables"],[null,"","yogur","dairy"],[null,"","quicos","pantry"],[null,"","ralladura de lima","produce"]],
+ s:["Pela el calabacín y el pepino, y quita el germen al ajo.","Tritura todo <em>menos el aceite</em> hasta que esté bien fino.","Vierte el aceite poco a poco y emulsiona.","Corrige el espesor con más o menos agua, y corrige sal y vinagre.","Reposa entre treinta y sesenta minutos en la nevera.","Sirve con yogur, pimienta, aceite verde y quicos rotos por encima."],
+ note:"<b>Los toppings no son opcionales.</b> El quico crujiente y saladito es la mitad del plato."},
+{id:"pastelana",n:"Pastelaña",sub:"lasaña de batata, sin nada de pasta",t:"oven",by:"gabsmrivers",byn:"Gabriela Rivera",d:"2026-06-13",lang:"ES",url:"https://www.instagram.com/p/DZidHJ7PJQh/",dir:"2026-06-13_gabsmrivers_DZidHJ7PJQh",serves:6,mins:80,
+ prep:"Se arma y va al horno cincuenta minutos. Sobra para toda la semana.",
+ i:[[3,"","batatas","produce","grandes, en rodajas finas"],[450,"g","carne molida 90/10","meat","1 libra"],[225,"g","salsa marinara","pantry","8 oz"],[2,"","huevos","dairy"],[1,"cda","albahaca fresca","produce"],[425,"g","queso ricotta sin grasa","dairy","15 oz"],[1,"taza","mozzarella rallada sin grasa","dairy"],[2,"cdas","perejil fresco","produce","picado"],[null,"","sal, pimienta, ajo en polvo y paprika","pantry"],[null,"","aceite de aguacate","pantry"]],
+ s:["Corta las batatas en lascas finas y hornéalas con un poco de aceite quince minutos.","Mientras, sazona la carne con sal, pimienta, ajo en polvo y paprika, y dórala.","Añade la salsa marinara y la albahaca fresca a la carne.","Mezcla la ricota con los dos huevos y el perejil para el relleno.","Monta en un molde 8×8: carne, batata, relleno de ricota, queso. Repite, terminando con queso.","Horno a 175 °C: cuarenta minutos tapada, luego diez minutos destapada.","Grill dos o tres minutos al final."],
+ note:"La batata sustituye a la pasta. Mitad lasaña, mitad pastelón."},
+{id:"chickenpizza",n:"Pizza Proteica con Base de Pollo",sub:"la carne de pollo hace de masa",t:"oven",merged:true,by:"raquel_merono + carnivore_connoisseur",byn:"Raquel Meroño · Jordan Masuccio",d:"2026-09-19",lang:"ES/EN",url:"https://www.instagram.com/p/DdemvRsCnJa/",url2:"https://www.instagram.com/p/DdPYFSaAcR8/",dir:"2026-09-19_raquel_merono_DdemvRsCnJa",dir2:"2026-09-13_carnivore_connoisseur_DdPYFSaAcR8",serves:3,mins:35,
+ prep:"Nada que hacer antes. Treinta y cinco minutos, casi todo horno.",
+ i:[["G","","Para la base"],[450,"g","carne picada de pollo","meat","extra magra"],[2,"","huevos","dairy"],[50,"g","queso parmesano rallado","dairy"],[0.75,"cdta","ajo en polvo","pantry"],[0.75,"cdta","hierbas provenzales","pantry","orégano, albahaca, tomillo"],[null,"","sal y pimienta","pantry"],["G","","Para cubrir"],[120,"ml","salsa de tomate para pizza","pantry"],[125,"g","mozzarella","dairy"],[60,"g","pepperoni","meat"],[null,"","albahaca fresca","produce","para terminar"]],
+ s:["Precalienta el horno a 215 °C y cubre una bandeja con papel de horno.","Mezcla la carne picada de pollo con los huevos, el parmesano, el ajo en polvo, las hierbas, sal y pimienta.","Extiende la mezcla sobre la bandeja formando una base fina y uniforme, como si fuera la masa.","Hornea 16–18 minutos, hasta que el pollo esté hecho y los bordes empiecen a dorarse.","Saca del horno y añade la salsa de tomate, la mozzarella y el pepperoni.","Hornea otros 7–8 minutos, hasta que la mozzarella esté fundida y ligeramente dorada. Termina con albahaca."],
+ note:"<b>Dos pizzas proteicas fusionadas.</b> La de @raquel_merono, con base de pollo, es la receta completa de arriba. @carnivore_connoisseur hace la misma idea con otra base — <em>cottage cheese, un poco de mozzarella y un huevo</em>, batido y horneado — pero sin cantidades. Si te sobra cottage cheese de los bagels, es la variante a probar."},
+{id:"enrollado",n:"Sándwich Enrollado de Obleas",sub:"crujiente, en horno o air fryer",t:"oven",by:"chefbosquet",byn:"Roberto ChefBosquet",d:"2026-08-08",lang:"ES",url:"https://www.instagram.com/p/DbybiOAIqo4/",dir:"2026-08-08_chefbosquet_DbybiOAIqo4",serves:1,mins:20,
+ prep:"Se monta en tres minutos y va al horno. Cantidades por sándwich.",
+ i:[[3,"","obleas de arroz y yuca","asian"],[1,"","huevo","dairy","batido"],[60,"g","fiambre sin aditivos","meat","pavo, pollo o york"],[30,"g","queso rallado","dairy"]],
+ s:["Impregna las tres obleas en huevo batido y colócalas superpuestas.","Añade el fiambre y el queso rallado.","Cierra los laterales y enrolla.","Horno o Air Fryer a 190 °C durante diez o quince minutos."],
+ note:"Un mixto enrollado y crujiente, sin pan."},
+{id:"squashorzo",n:"Onion Squash Orzo",sub:"hot honey, crisp sage and roasted seeds",t:"oven",by:"mob",byn:"Mob",d:"—",lang:"EN",url:"https://www.mob.co.uk/",noimg:true,dir:"—",serves:2,mins:55,
+ prep:"Roast, blitz, stir through. The seeds roast while the squash does.",
+ i:[[600,"g","onion squash","produce"],[1,"","white onion","produce"],[2,"","tomatoes","produce"],[2,"cloves","garlic","produce","unpeeled"],[0.5,"tsp","chilli flakes","pantry"],[20,"g","fresh sage","produce"],[200,"g","orzo","pantry"],[20,"g","salted butter","dairy"],[200,"ml","chicken stock","pantry"],[30,"g","hot honey","pantry"],[30,"g","Parmesan","dairy"],[0.25,"","lemon","produce"],[null,"","rapeseed oil","pantry"]],
+ s:["Heat the oven to 200 °C fan.","Halve the squash from stem to tip. Scoop out the seeds and keep them. Quarter the onion through the root with its skin on. Halve the tomatoes.","Cut each squash half into four to six wedges on a baking sheet with space between them. Tuck the onion, tomatoes and unpeeled garlic in the gaps, cut side down. Oil generously, sprinkle with chilli flakes and salt, and roast 35–45 minutes, turning the wedges after about 25.","Meanwhile spread the seeds on a small tray, separating them from the flesh with two forks. Oil, salt, and roast 20–25 minutes until golden, shuffling once or twice. With ten minutes left, add the sage leaves dragged through the oil.","Cook the orzo in salted water two minutes less than the packet says. Drain, rinse cold, fork through, and return to the pan.","Blitz half the squash with the tomatoes, onion and garlic (skins off), the tray juices, the butter, a pinch of salt and two thirds of the stock until silky.","Drizzle hot honey over the remaining wedges and return them to the oven, turning it off.","Pour the sauce into the orzo over low-medium heat for two to three minutes. Grate in two thirds of the Parmesan and squeeze in the lemon. Loosen with more stock so it flows like the loosest risotto. Check seasoning.","Top with the wedges, more Parmesan, the roasted seeds and sage, and a really generous drizzle of hot honey."],
+ note:"<b>No photo</b> — this came from mob.co.uk rather than a reel. The roasted seeds are the part people skip and shouldn't."},
+{id:"popcornchicken",n:"Taiwanese Popcorn Chicken",sub:"air fryer, and no deep frying",t:"oven",by:"joexfitness",byn:"Joe Chu",d:"2026-09-02",lang:"EN",url:"https://www.instagram.com/p/Dcy8EoQIBhh/",dir:"2026-09-02_joexfitness_Dcy8EoQIBhh",serves:2,mins:30,m:{kcal:531,p:49,c:53,f:10},
+ prep:"The chicken wants thirty minutes marinating, or overnight. Then fifteen minutes in the air fryer.",
+ i:[["G","","Chicken"],[450,"g","chicken thighs","meat","1 lb, in 1-inch pieces"],[0.5,"tsp","white pepper","asian"],[1,"tsp","Chinese five spice powder","asian"],[1.5,"tbsp","garlic","produce","minced"],[1,"tbsp","ginger","produce","minced"],[1,"tbsp","Shaoxing wine","asian"],[2,"tbsp","soy sauce","asian"],[0.75,"cup","coarse potato starch","asian"],[1,"","egg","dairy","white only"],[null,"","spray cooking oil","pantry"],["G","","Seasoning and topping"],[0.5,"tsp","salt","pantry"],[0.5,"tsp","five spice powder","asian"],[0.5,"tsp","brown sugar","pantry"],[0.5,"tsp","white pepper","asian"],[1,"cup","Thai basil","produce"]],
+ s:["Dice the chicken thighs into small one-inch pieces.","Mix white pepper, five spice, garlic, ginger, Shaoxing wine, soy sauce and the egg white into a marinade.","Add the chicken and rest thirty minutes, or overnight.","Coat every piece fully in coarse potato starch.","Spray the air fryer tray, lay the chicken out, and spray the chicken lightly too.","Air fry at 200 °C for 13–15 minutes, flipping halfway.","Add the Thai basil on top and air fry another two or three minutes.","Mix the salt, five spice, brown sugar and white pepper, and sprinkle over."],
+ note:"<b>Coarse</b> potato starch is what gives the crunch — not flour, and not the fine stuff."},
+{id:"albondigas",n:"Albóndigas de Pollo y Calabacín",sub:"con queso cottage, para toda la familia",t:"oven",by:"purahealthyvida",byn:"Sara y Alex",d:"2026-09-10",lang:"ES",url:"https://www.instagram.com/p/DdHZKkVi6oQ/",dir:"2026-09-10_purahealthyvida_DdHZKkVi6oQ",serves:3,mins:45,m:{p:49,c:6.7,f:16.3},
+ prep:"La mezcla necesita media hora de nevera antes de dar forma.",
+ i:[[500,"g","pechuga de pollo o pavo","meat","picada"],[0.5,"","calabacín","produce","rallado y escurrido"],[1,"","huevo","dairy"],[200,"g","queso cottage","dairy"],[250,"ml","tomate triturado natural","pantry"],[null,"","albahaca fresca","produce"],[2,"cdas","aceite de oliva virgen extra","pantry"],[null,"","sal y pimienta negra","pantry"],[null,"","orégano","pantry"],[null,"","pan rallado o avena","pantry","si cuesta dar forma"],[null,"","parmesano","dairy","para servir"]],
+ s:["Mezcla la carne picada con el calabacín rallado y escurrido, el huevo, dos cucharadas de queso cottage, sal y especias.","Integra bien y deja reposar media hora en la nevera.","Dale forma con las manos. Si cuesta, añade un poco de pan rallado o avena.","Dora en sartén, horno o freidora de aire.","Mientras, cocina el tomate triturado con albahaca fresca.","Añade las albóndigas ya doradas al tomate y cocina cinco minutos más.","Sirve con más queso cottage, albahaca y parmesano rallado."],
+ note:"Cuarenta y nueve gramos de proteína por ración y solo 6,7 de hidratos."},
+{id:"palakpaneer",n:"Palak Paneer Chicken Meatballs",sub:"the grated paneer is the trick",t:"fresh",by:"mob",byn:"Mob",d:"2026-07-07",lang:"EN",url:"https://www.instagram.com/p/DafKBNNIfoz/",dir:"2026-07-07_mob_DafKBNNIfoz",serves:4,mins:45,
+ prep:"The meatballs want time in the fridge to firm up. Everything else runs in parallel.",
+ i:[["G","","Meatballs"],[400,"g","chicken mince","meat"],[200,"g","paneer","dairy"],[250,"g","frozen spinach","frozen"],[2,"tsp","garam masala","pantry"],[1,"","spring onion","produce"],["G","","Rice"],[200,"g","basmati rice","pantry"],[250,"ml","water","other"],["G","","Sauce"],[500,"g","frozen spinach","frozen"],[25,"g","fresh coriander","produce"],[70,"g","cashews","pantry"],[300,"ml","water","other"],[1,"tbsp","ginger and garlic paste","asian"],[1,"tbsp","garam masala","pantry"],[0.5,"","lemon","produce"],["G","","To serve"],[30,"g","cashews","pantry"],[null,"","olive oil","pantry"],[null,"","salt and black pepper","pantry"]],
+ s:["Defrost the meatball spinach and squeeze out as much water as you can. Slice the spring onion. Finely grate the paneer and add 75% of it to a bowl with the chicken mince, garam masala and spring onion. Season generously, mix, and portion into five meatballs per person. Chill to firm up.","Wash the rice until the water runs clearer. Bring to the boil with the water, then lid on, low heat, twelve minutes. Off the heat, fluff, and lid back on for ten more.","Make the sauce: keep half the coriander leaves for serving. Blend the stems and remaining leaves with half the frozen spinach, the cashews, water, garam masala and ginger garlic paste until very smooth. Season.","Toast the garnish cashews in a dry pan over medium heat four to five minutes until golden. Set aside.","Add a drizzle of oil to the pan and brown the meatballs on all sides. Pour in the sauce, season, and simmer 10–15 minutes until thickened and cooked through. Squeeze in the lemon, then stir the remaining frozen spinach through to wilt.","Rice on plates, meatballs and sauce on top, then the remaining paneer, coriander leaves and toasted cashews."],
+ note:"<b>Grate paneer straight into the meatball mix</b> and they stay juicy right through cooking."},
+{id:"tunapizza",n:"Pizza Proteica de Atún",sub:"dos ingredientes, sin harina, en la sartén",t:"fresh",by:"hoycomemossano",byn:"Inés · Hoy Comemos Sano",d:"2026-09-13",lang:"ES",url:"https://www.instagram.com/p/DdPB6S0hgtN/",dir:"2026-09-13_hoycomemossano_DdPB6S0hgtN",serves:1,mins:15,
+ prep:"Nada que preparar. Quince minutos y una sartén con tapa.",
+ i:[["G","","Base"],[2,"latas","atún","pantry","al natural, o en aceite de oliva escurrido"],[2,"","huevos","dairy"],[null,"","sal","pantry","un poco, opcional"],["G","","Toppings"],[null,"","salsa de tomate","pantry"],[null,"","orégano","pantry"],[null,"","mozzarella","dairy"],[null,"","rúcula","produce"]],
+ s:["Tritura el atún con los huevos y un poco de sal.","Vierte la mezcla en una sartén engrasada y cocina a fuego medio con la tapa, por los dos lados.","Añade la salsa de tomate, el orégano y la mozzarella.","Tapa hasta que el queso se derrita. Termina con rúcula."],
+ note:"La proteína ya va en la base, así que por encima no hace falta más que tomate, orégano y queso. Cena habitual en su casa desde que la probó."},
+{id:"tortillapavo",n:"Tortilla de Patata Crujiente con Pavo",sub:"más de 40 g de proteína",t:"fresh",by:"nachoomayol",byn:"Nacho Mayol",d:"2026-09-20",lang:"ES",url:"https://www.instagram.com/p/DdhPu83ufSw/",dir:"2026-09-20_nachoomayol_DdhPu83ufSw",serves:1,mins:15,m:{kcal:280,p:40},
+ prep:"Nada que preparar. Una sartén, quince minutos.",
+ i:[[1,"","patata","produce","en láminas finas"],[2,"","huevos","dairy"],[null,"","queso light","dairy"],[null,"","pavo 99%","meat","en lonchas"],[null,"","sal y especias","pantry"]],
+ s:["Coloca las láminas de patata en la sartén y cocina hasta que estén doradas y crujientes.","Añade los huevos batidos con sal y especias, y cuaja.","Añade el queso y el pavo.","Dóblala por la mitad, y a disfrutar."],
+ note:"Los macros salen del propio vídeo: 280 kcal y 40 g de proteína. Es una tortilla-taco: la patata crujiente hace de base, y el pavo y el queso van dentro."},
+{id:"ricenoodlesalad",n:"Rice Noodle Salad with Crispy Tofu",sub:"peanut sauce, air-fryer tofu, every week",t:"fresh",by:"studioannasoophiaa",byn:"Anna Sophia",d:"2026-07-01",lang:"DE→EN",url:"https://www.instagram.com/p/DaQb29CM_dp/",dir:"2026-07-01_studioannasoophiaa_DaQb29CM_dp",serves:2,mins:30,
+ prep:"Nothing ahead. The tofu air-fries while you chop and boil the noodles.",
+ i:[["G","","Salad"],[null,"","carrot","produce"],[null,"","onion","produce"],[null,"","spring onion","produce"],[null,"","cucumber","produce"],[null,"","rice noodles","asian"],[null,"","fresh coriander","produce"],[null,"","fresh mint","produce"],[null,"","peanuts","pantry"],["G","","Peanut sauce"],[3,"tbsp","peanut butter","pantry","heaped"],[null,"","water or milk","other","to thin"],[2,"tbsp","sriracha","asian"],[3,"tbsp","soy sauce","asian"],[null,"","ginger","produce","grated"],[null,"","salt","pantry"],[1,"clove","garlic","produce","optional"],["G","","Crispy tofu"],[1,"block","firm tofu","dairy"],[2,"tbsp","spelt flour","pantry"],[5,"tbsp","oat milk","dairy"],[3,"tbsp","sriracha","asian"],[2,"tbsp","soy sauce","asian"],[null,"","paprika","pantry"],[null,"","salt","pantry"],[null,"","fresh ginger and garlic","produce"]],
+ s:["Take the tofu out of the pack, pat it dry and crumble it. Add all the other tofu ingredients, mix to coat, and put it in the air fryer.","Meanwhile, chop the vegetables and cook the rice noodles following the packet. Rinse them under cold water afterwards so they don't stick together.","Shake the sauce ingredients together in a sealable jar until creamy.","Put everything into the big pot with the noodles, toss, and top with coriander."],
+ note:"<b>Translated from German</b> — the original caption is in German with an unrelated Spanish song over the video. The salad vegetables had no quantities in the original; the sauce and the tofu marinade did. She makes it every week and never gets sick of it."},
+{id:"bigmac",n:"Big Mac Dumplings",sub:"wonton wrappers, steamed then crisped",t:"fresh",by:"thekelseyrose_",byn:"Kelsey Rose",d:"2026-04-16",lang:"EN",url:"https://www.instagram.com/p/DXNJB4ajz9t/",dir:"2026-04-16_thekelseyrose_DXNJB4ajz9t",serves:4,mins:25,
+ prep:"Nothing to do ahead. One pan, start to finish.",
+ i:[[450,"g","ground beef","meat","1 lb"],[null,"","pickles","pantry","diced"],[null,"","garlic powder, onion powder, salt, pepper","pantry"],[20,"","wonton wrappers","asian"],[10,"slices","cheese","dairy"],[4,"tbsp","mayonnaise","pantry"],[2,"tbsp","ketchup","pantry"],[1,"tbsp","relish","pantry"],[1,"tsp","sesame seeds","asian"],[2,"","green onions","produce"]],
+ s:["Mix the beef with diced pickles, garlic powder, onion powder, salt and pepper. Form into small balls.","Brown the balls in a hot pan.","Top each with cheese, lay a wonton wrapper on top and press down.","Add a third of a cup of water, cover, and steam until the wrappers soften.","Flip and crisp the bottoms.","Drizzle with the special sauce and top with sesame seeds and green onions."],
+ note:"The special sauce is just mayonnaise, ketchup and relish mixed together."},
+{id:"steamedchicken",n:"Steamed Chicken, Ginger Scallion Oil",sub:"over white rice",t:"fresh",merged:true,by:"nenacreates + gramstogains",byn:"Nena · Jared",d:"2026-08-20",lang:"EN",url:"https://www.instagram.com/p/DcP2j9JPUpD/",url2:"https://www.instagram.com/p/DZgV4gXTA9B/",dir:"2026-08-20_nenacreates_DcP2j9JPUpD",dir2:"2026-06-13_gramstogains_DZgV4gXTA9B",serves:4,mins:40,
+ prep:"Twenty-five minutes of steaming, and you make the sauce while it steams.",
+ i:[["G","","Chicken"],[5,"","chicken thighs","meat","bone-in"],[6,"slices","ginger","produce"],[3,"","green onions","produce","in 2–3 inch pieces"],["G","","Ginger scallion oil"],[3,"tbsp","neutral oil","pantry"],[3,"tbsp","ginger","produce","minced"],[4,"tbsp","scallions","produce","chopped"],[null,"","gochugaru or red pepper flakes","asian"],[null,"","salt","pantry","a pinch"],["G","","Chicken sauce"],[2,"tbsp","soy sauce","asian"],[2,"tbsp","oyster sauce","asian"],[0.5,"tbsp","chicken bouillon","pantry"],[0.5,"tsp","sugar","pantry"],[null,"","sesame oil","asian","a drizzle"],[null,"","salt","pantry","to taste"],["G","","To serve"],[null,"","white rice","pantry"]],
+ s:["Set a steamer rack in a large pan with four cups of water. No rack? Flip sauce containers upside down and rest a flat bowl on them.","Put a flat bowl on the rack and a small bowl face down in its centre — it catches the juices.","Once the water boils, arrange the chicken around the small bowl with the ginger and scallions on top.","Cover and steam over medium-high for twenty-five minutes.","While it steams, heat the oil in a small pot over low heat. Add the minced ginger and cook about two minutes.","Add the scallions and cook another two minutes until fragrant — don't let them burn.","Add salt and chilli flakes, stir, turn off the heat and transfer to a bowl.","Add the soy sauce, oyster sauce, bouillon, sugar and sesame oil. Mix.","When the chicken is done, discard the steamed ginger and scallions. <b>Keep the broth under the small bowl</b> and pour it into the sauce.","Shred the chicken off the bones, toss through the sauce, and serve over rice."],
+ note:"<b>Two versions merged.</b> @gramstogains adds <em>red dates</em> and <em>Shaoxing wine</em> to the steaming plate, and <em>coriander stems</em> to the oil. Use a spoon to peel the ginger."},
+{id:"mandu",n:"Crispy Rice Paper Mandu",sub:"fifty-three grams of protein",t:"fresh",by:"joexfitness",byn:"Joe Chu",d:"2026-08-15",lang:"EN",url:"https://www.instagram.com/p/DcEl18MgvXe/",dir:"2026-08-15_joexfitness_DcEl18MgvXe",serves:1,mins:25,m:{kcal:564,p:53,c:58,f:13},
+ prep:"Nothing ahead. The filling goes in raw and cooks in the pan.",
+ i:[[6,"sheets","rice paper","asian"],[225,"g","95% lean ground beef","meat","8 oz, raw"],[1,"tbsp","oyster sauce","asian"],[1,"tbsp","garlic","produce","minced"],[1,"tsp","black pepper","pantry"],[1,"tbsp","cornstarch","pantry"],[1,"tsp","salt","pantry"],[4,"","green onions","produce"],[1,"","zucchini","produce"],[null,"","spray oil","pantry"]],
+ s:["Thinly slice the green onions and zucchini.","Mix them with the oyster sauce, garlic, black pepper, cornstarch, salt and ground beef. Mash together well.","Lightly wet a sheet of rice paper, shake off the excess, and lay it flat.","Put two or three tablespoons of filling on it and roll it up like a burrito.","Grill on both sides in a spray-oiled pan over medium-low heat until crispy brown and cooked through."],
+ note:"Medium-<b>low</b> heat matters. The beef inside is raw and needs the time, while rice paper browns fast."},
+{id:"onepotbulgogi",n:"One-Pot Bulgogi",sub:"rice cakes, glass noodles, one vessel",t:"fresh",merged:true,by:"joexfitness",byn:"Joe Chu",d:"2026-09-05",lang:"EN",url:"https://www.instagram.com/p/Dc6qiB5iNBk/",url2:"https://www.instagram.com/p/Darmor0PUU4/",dir:"2026-09-05_joexfitness_Dc6qiB5iNBk",dir2:"2026-07-12_joexfitness_Darmor0PUU4",serves:1,mins:25,m:{kcal:596,p:33,c:58,f:27},
+ prep:"Everything goes in raw. One pot, lid on, done.",
+ i:[["G","","Bulgogi"],[115,"g","thinly sliced ribeye","meat","4 oz — sold as bulgogi meat"],[0.33,"tbsp","honey","pantry"],[1,"tsp","garlic","produce","minced"],[2,"tbsp","soy sauce","asian"],[0.33,"tbsp","sesame oil","asian"],[0.25,"tsp","black pepper","pantry"],[null,"","spray oil","pantry"],["G","","The pot"],[0.33,"","yellow onion","produce","large"],[1,"","green onion","produce"],[3,"","shiitake mushrooms","produce"],[28,"g","rice cakes","asian","1 oz"],[0.5,"cup","beef bone broth","pantry"],[28,"g","dangmyeon glass noodles","asian","1 oz, raw"]],
+ s:["Thinly dice the onion, mushrooms and green onion.","Mix the meat with honey, garlic, soy sauce, sesame oil and black pepper.","In a large pot over medium heat, spray with oil and add the rice cakes, onion, green onion, mushrooms, glass noodles, the bulgogi and the beef bone broth.","Cover and bring to a boil.","Cook until the meat, noodles and rice cakes are cooked through."],
+ note:"<b>Two similar posts merged.</b> The other is a <em>rice-cooker</em> version with gochugaru and gochujang, jasmine rice and edamame, eaten in lettuce wraps."}
+];
+
+/* ═══════════ STILL MISSING ═══════════ */
+const GONE=[
+{n:"Chicken Rice Paper Pockets & Lentil Soup",by:"fiteat.rima",d:"2026-06-07",t:"nocook",url:"https://www.instagram.com/p/DZS9OTaODvB/",gate:'Comment "RECIPE"',why:"The caption is a teaser and the method goes out by DM. The audio is unintelligible filler.",have:"High-protein chicken rice paper pockets with a lentil soup alongside."},
+{n:"Crispy Buffalo Chicken Spiral",by:"fiteat.rima",d:"2026-07-14",t:"oven",url:"https://www.instagram.com/p/DayVP4ktCfe/",gate:'Comment "recipe"',why:"Same creator, same gate. The caption is one line and the audio is the song.",have:"High protein, low calorie, crispy buffalo chicken in a spiral — likely a rolled tortilla or rice-paper spiral, air-fried."},
+{n:"Crack Sauce & Crispy Tofu Noodle Salad",by:"thegoodbite",d:"2026-06-26",t:"nocook",url:"https://www.instagram.com/p/DaDoNd5Ir6f/",gate:'Comment "Recipe" → app',why:"Routes to their paid app. The transcript names no ingredient beyond crack sauce and tofu.",have:"619 kcal, 24.3 g protein, serves four. Crispy sweet-and-spicy tofu over a crunchy noodle salad."},
+{n:"Cottage Cheese Pesto & Prosciutto Wrap",by:"recipesbyvictoria",d:"2026-07-08",t:"nocook",url:"https://www.instagram.com/p/DahsUNiPpVk/",gate:'Comment "YUM"',why:"A ten-second reel whose caption is a lead magnet. The transcript is song lyrics.",have:"Only the title — but honestly reconstructable from the name alone."},
+{n:"Lazy Girl Lasagna",by:"haleynicolefit",d:"2026-07-15",t:"oven",url:"https://www.instagram.com/p/Da0d_N_ukOU/",gate:'Comment "LAZY"',why:"The caption never names the dish. The name came from reading a frame of the video.",have:"<b>It's a lasagna, not pasta.</b> A frame reads <em>30 Days Of High Protein Recipes · Lazy Girl Lasagna</em>. Billed as a ten-minute meal prep."},
+{n:"Crispy Cheese Salmon",by:"catherine_printezis",d:"2026-09-22",t:"oven",url:"https://www.instagram.com/p/Ddmv9PiCFJH/",gate:"No recipe posted",why:"Seven-second reel, caption is just the title and a follow request. The audio is an Arabic song.",have:"Salmon with a crispy cheese crust — probably grated parmesan pressed on and pan-fried or air-fried. Watch the reel; it's short enough to read the method by eye."},
+{n:"Thai Glass Noodle Salad",by:"finntonry",d:"2026-08-23",t:"nocook",url:"https://www.instagram.com/p/DcYI4oEut51/",gate:"Link in bio",why:"Part of their 5030 series — recipes live on the website. The transcript is the song.",have:"558 kcal, 55 g protein, under thirty minutes, with prawns."},
+{n:"Bang Bang Chicken Salad",by:"finntonry",d:"2026-08-31",t:"nocook",url:"https://www.instagram.com/p/DctdoZ7tPvo/",gate:"Link in bio",why:"Same series, same problem.",have:"559 kcal, 57 g protein. Both finntonry recipes are on the same site — one visit gets both."}
+];
+
+/* ═══════════ STATE ═══════════
+   basket: what we're cooking this week  {id:{serv,cooked}}
+   days:   optional day assignment       {"0-l": id}
+   The shopping list is built from the basket, never from the days. */
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],FULL=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const SLOTS=[["b","Breakfast"],["l","Lunch"],["d","Dinner"]];
+const RM=Object.fromEntries(R.map(r=>[r.id,r]));
+const IMG=r=>r.noimg?null:"recipe-images/"+r.id+".jpg";
+let DB=null,wOff=0,tab="book",S=blank(),F={type:null,q:""};
+function blank(){return {basket:{},days:{},checked:{},extras:[]};}
+const monday=o=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7)+o*7);d.setHours(0,0,0,0);return d;};
+const wkey=o=>{const m=monday(o);return m.getFullYear()+"-"+String(m.getMonth()+1).padStart(2,"0")+"-"+String(m.getDate()).padStart(2,"0");};
+const fmt=d=>d.toLocaleDateString(undefined,{day:"numeric",month:"short"});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const basket=()=>Object.entries(S.basket).map(([id,v])=>({id,...v,r:RM[id]})).filter(x=>x.r);
+function fq(q){if(q==null)return "";const r=Math.round(q*100)/100;if(Math.abs(r-Math.round(r))<.005)return String(Math.round(r));
+  const fr={0.25:"¼",0.33:"⅓",0.5:"½",0.67:"⅔",0.75:"¾"};const w=Math.floor(r),f=Math.round((r-w)*100)/100;return fr[f]?(w||"")+fr[f]:String(r);}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2200);}
+function normalize(d){
+  const s=blank();
+  if(d){
+    s.basket=d.basket||{};s.days=d.days||{};s.checked=d.checked||{};s.extras=d.extras||[];
+    if(!d.basket&&d.slots){ /* migrate the old day-first shape */
+      for(const k in d.slots){const v=d.slots[k];if(!RM[v.id])continue;
+        s.days[k]=v.id;if(!s.basket[v.id])s.basket[v.id]={serv:v.serv||RM[v.id].serves,cooked:false};}
+    }
+  }
+  return s;
+}
+const LS=k=>"reelkitchen3:"+k;
+function loadLocal(){let raw=null;try{raw=localStorage.getItem(LS(wkey(wOff)))||localStorage.getItem("reelkitchen2:"+wkey(wOff));}catch(e){}
+  S=normalize(raw?JSON.parse(raw):null);}
+const saveLocal=()=>{try{localStorage.setItem(LS(wkey(wOff)),JSON.stringify(S));}catch(e){}};
+let tmr=null;
+function save(){saveLocal();if(!DB)return;clearTimeout(tmr);
+  tmr=setTimeout(()=>DB.doc("weeks/"+wkey(wOff)).set({...S,updated:new Date().toISOString()}).catch(e=>{if(e&&e.code!=="unavailable")toast("Saved on this device only");}),700);}
+let un=null;
+function watch(){if(un){un();un=null;}loadLocal();draw();if(!DB)return;
+  un=DB.doc("weeks/"+wkey(wOff)).onSnapshot(s=>{if(s.metadata.hasPendingWrites||!s.exists)return;S=normalize(s.data());saveLocal();draw();},()=>{});}
+
+/* ═══════════ SHOPPING ═══════════ */
+function list(){
+  const m=new Map();
+  for(const b of basket()){
+    const mult=(b.serv||b.r.serves)/b.r.serves;
+    for(const g of b.r.i){if(g[0]==="G")continue;const [q,u,name,aisle,note]=g;const key=name.toLowerCase()+"|"+aisle;
+      if(!m.has(key))m.set(key,{name,aisle,units:{},soft:false,from:new Set(),notes:new Set()});
+      const e=m.get(key);e.from.add(b.r.n);if(note)e.notes.add(note);
+      if(q==null)e.soft=true;else{const uu=u||"×";e.units[uu]=(e.units[uu]||0)+q*mult;}}
+  }
+  const out={};for(const [key,e] of m)(out[e.aisle]=out[e.aisle]||[]).push({key,...e});
+  for(const a in out)out[a].sort((x,y)=>x.name.localeCompare(y.name));return out;
+}
+const qtxt=e=>{const p=Object.entries(e.units).map(([u,v])=>fq(v)+(u==="×"?"":" "+u));return p.length?p.join(" + "):null;};
+
+/* ═══════════ BITS ═══════════ */
+const CHK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+function shot(r,over){const src=IMG(r);return `<div class="shot" style="--tc:${T[r.t].c}">`+(src?`<img src="${src}" alt="" loading="lazy" onerror="this.remove()">`:`<div class="noimg"><span>${esc(r.n)}</span></div>`)+(over||"")+`</div>`;}
+function card(r){const inb=!!S.basket[r.id];
+  return `<button class="rc" data-open="${r.id}">${shot(r,`<span class="pin"><i></i>${esc(T[r.t].short)}</span>${inb?`<span class="in">${CHK}</span>`:""}`)}
+    <h3>${esc(r.n)}</h3><div class="m">${r.mins} min · serves ${r.serves}${r.m&&r.m.p?" · "+r.m.p+" g protein":""}</div></button>`;}
+
+/* ═══════════ BOOK ═══════════ */
+const hit=r=>(!F.type||r.t===F.type)&&(!F.q||(r.n+" "+r.sub+" "+r.byn+" "+r.by+" "+r.i.map(x=>x[2]).join(" ")).toLowerCase().includes(F.q.toLowerCase()));
+function drawBook(){
+  const got=R.filter(hit),nb=Object.keys(S.basket).length;
+  const chips=`<button class="chip" data-type="" aria-pressed="${!F.type}">All ${R.length}</button>`+TYPES.map(t=>`<button class="chip" style="--tc:${t.c}" data-type="${t.id}" aria-pressed="${F.type===t.id}"><i></i>${esc(t.short)}</button>`).join("");
+  let body;
+  if(F.q||F.type){
+    const t=F.type&&T[F.type];
+    body=`<div class="sec">${t?`<div class="sec-h"><h2>${esc(t.label)}</h2><span class="n">${got.length}</span></div><p class="sec-p">${esc(t.desc)}</p>`:`<div class="sec-h"><h2>Results</h2><span class="n">${got.length}</span></div>`}
+      ${got.length?`<div class="grid">${got.map(card).join("")}</div>`:`<div class="empty"><b>Nothing matches</b>Try another word or clear the filter.</div>`}</div>`;
+  }else{
+    body=TYPES.map(t=>{const rs=R.filter(r=>r.t===t.id);if(!rs.length)return "";
+      return `<div class="sec"><div class="sec-h"><h2>${esc(t.label)}</h2><span class="n">${rs.length}</span></div><p class="sec-p">${esc(t.desc)}</p><div class="hs">${rs.map(card).join("")}</div></div>`;}).join("");
+  }
+  document.getElementById("p-book").innerHTML=`
+    <div class="srch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" placeholder="Search a dish, an ingredient, a creator…" value="${esc(F.q)}"></div>
+    <div class="chips" style="margin-bottom:22px">${chips}</div>
+    ${nb?`<div class="band" style="margin-bottom:24px"><div class="sec-h"><h2>Cooking this week</h2><span class="n">${nb}</span></div><p class="sec-p">Tap a dish to change servings or take it out. Then plan the days on <b>This Week</b>.</p>
+      <div class="hs">${basket().map(b=>card(b.r)).join("")}</div></div>`:""}
+    ${body}`;
+}
+
+/* ═══════════ THIS WEEK ═══════════ */
+function drawWeek(){
+  const bk=basket(),mon=monday(wOff),today=(()=>{const t=new Date();t.setHours(0,0,0,0);return t.getTime();})();
+  const cards=bk.map(b=>`<div class="bk${b.cooked?" done":""}" style="--tc:${T[b.r.t].c}">
+      ${shot(b.r,`<button class="ck" data-cook="${b.id}"><i>${CHK}</i>Cooked</button>
+        <div class="ctl"><span class="stp"><button data-sv="${b.id}" data-d="-1" aria-label="Fewer">−</button><b>${b.serv}</b><button data-sv="${b.id}" data-d="1" aria-label="More">+</button></span>
+        <button class="rm" data-rm="${b.id}" aria-label="Remove">${'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>'}</button></div>`)}
+      <button class="rc" data-open="${b.id}" style="display:block"><h3>${esc(b.r.n)}</h3><div class="m">${b.serv} serving${b.serv===1?"":"s"} · ${b.r.mins} min</div></button></div>`).join("");
+  let days="";
+  for(let i=0;i<7;i++){const dd=new Date(mon);dd.setDate(mon.getDate()+i);const now=dd.getTime()===today;let sl="";
+    for(const [sk,sn] of SLOTS){const key=i+"-"+sk,id=S.days[key],r=id&&RM[id];
+      if(r){const src=IMG(r);sl+=`<button class="sl on" style="--tc:${T[r.t].c}" data-slot="${key}"><span class="th">${src?`<img src="${src}" alt="" loading="lazy" onerror="this.remove()">`:""}</span><span><span class="t">${sn}</span><span class="nm">${esc(r.n)}</span></span></button>`;}
+      else sl+=`<button class="sl" data-slot="${key}"><span class="t">${sn}</span><span class="plus">+ Choose</span></button>`;}
+    days+=`<div class="day${now?" now":""}"><div class="day-h"><b>${FULL[i]}</b><span>${now?"today":fmt(dd)}</span></div><div class="slots">${sl}</div></div>`;}
+  const ahead=["freezer-raw","freezer-cooked","fridge"];let A="",B="";
+  for(const b of bk){const row=`<div class="pr" style="--tc:${T[b.r.t].c}"><i></i><div><b>${esc(b.r.n)}</b><span>${esc(b.r.prep)}</span></div></div>`;ahead.includes(b.r.t)?A+=row:B+=row;}
+  document.getElementById("p-week").innerHTML=`
+    <div class="band" style="margin-bottom:26px">
+      <div class="sec-h"><h2>Recipes to cook</h2><span class="n">${bk.length}</span></div>
+      <p class="sec-p">${bk.length?"Servings here are what scale the shopping list. Tick <b>Cooked</b> as you go.":"Start here: pick what you feel like eating this week. Days come after."}</p>
+      ${bk.length?`<div class="hs">${cards}</div><div class="row" style="margin-top:14px"><button class="btn o s" data-go="book">+ Add more from the Book</button><button class="btn o s" data-pre="clear">Clear the week</button></div>`
+        :`<div class="empty"><b>Nothing picked yet</b>Browse the Book and add whatever looks good.<br><button class="btn" data-go="book">Open the Book</button></div>`}
+    </div>
+    ${bk.length?`<div class="sec"><div class="sec-h"><h2>Plan by day</h2><span class="n">optional</span></div>
+      <p class="sec-p">Tap a slot and pick from what you're already cooking. Leave it loose if you'd rather decide on the day.</p>${days}</div>
+    <div class="sec"><div class="sec-h"><h2>Prep board</h2></div><p class="sec-p">What this week's picks owe you before the day you eat them.</p>
+      ${A?`<p class="lbl" style="margin:0 0 8px">Do ahead</p>${A}`:""}${B?`<p class="lbl" style="margin:${A?"16px":"0"} 0 8px">On the day</p>${B}`:""}</div>`:""}`;
+}
+
+/* ═══════════ SHOPPING ═══════════ */
+function drawShop(){
+  const bk=basket();
+  if(!bk.length){document.getElementById("p-shop").innerHTML=`<div class="hdr"><h2>Shopping list</h2><p>Built from the recipes you're cooking this week.</p></div>
+    <div class="empty"><b>Nothing to buy yet</b>Pick some recipes first.<br><button class="btn" data-go="book">Open the Book</button></div>`;
+    document.getElementById("b-shop").textContent="";return;}
+  const by=list();let tot=0,done=0,html="";
+  for(const [aid,an] of AISLES){const it=by[aid];if(!it||!it.length)continue;let rows="",ad=0;
+    for(const e of it){tot++;const ok=!!S.checked[e.key];if(ok){done++;ad++;}const q=qtxt(e);
+      rows+=`<button class="it${ok?" ok":""}" data-chk="${esc(e.key)}"><span class="bx">${CHK}</span><span class="b"><span class="nm">${esc(e.name)}</span><span class="fr">${esc([...e.from].join(" · "))}${e.notes.size?" — "+esc([...e.notes].join("; ")):""}</span></span><span class="q${q?"":" soft"}">${q?esc(q):(e.soft?"as needed":"")}</span></button>`;}
+    html+=`<div class="aisle"><div class="ah"><h3>${esc(an)}</h3><em>${ad}/${it.length}</em></div>${rows}</div>`;}
+  let ex="";S.extras.forEach((x,i)=>{tot++;const ok=!!S.checked["x:"+i];if(ok)done++;
+    ex+=`<button class="it${ok?" ok":""}" data-chk="x:${i}"><span class="bx">${CHK}</span><span class="b"><span class="nm">${esc(x)}</span><span class="fr">added by you</span></span><span class="q soft" data-del="${i}">remove</span></button>`;});
+  document.getElementById("p-shop").innerHTML=`
+    <div class="hdr"><h2>Shopping list <span class="muted" style="font-weight:600">(${tot})</span></h2><p>${bk.length} recipe${bk.length===1?"":"s"}, week of ${fmt(monday(wOff))}. Tick as you go — it remembers.</p></div>
+    <div class="prog"><i style="width:${tot?done/tot*100:0}%"></i></div>
+    <div class="row" style="margin-bottom:22px"><button class="btn o s" id="cpy">Copy as text</button><button class="btn o s" id="unc">Untick all</button></div>
+    ${html}
+    <div class="aisle"><div class="ah"><h3>Add your own</h3></div>${ex}<div class="addr"><input id="xa" placeholder="Milk, coffee, olive oil…" aria-label="Add an item"><button class="btn" id="xb">Add</button></div></div>
+    <p class="tiny muted" style="margin-top:22px;line-height:1.55">Amounts add together only when creators used the same unit; otherwise both are shown — <b>500 g + 2 tbsp</b> — rather than a guessed conversion. <i>As needed</i> means the post gave no quantity.</p>`;
+  const left=tot-done;document.getElementById("b-shop").textContent=left?String(left):"";
+}
+
+/* ═══════════ MISSING ═══════════ */
+function drawGone(){document.getElementById("p-gone").innerHTML=`<div class="hdr"><h2>Still missing</h2><p>Eight reels that hide the method behind a comment, a DM or a link in bio — and whose audio was music, so the transcript couldn't fill the gap. What's known, so you're not starting from zero.</p></div>
+  ${GONE.map(m=>`<div class="mc" style="--tc:${T[m.t].c}"><h3>${esc(m.n)}</h3><div class="by">@${esc(m.by)} · ${esc(m.d)} &nbsp;<span class="gate">${esc(m.gate)}</span></div><div class="why">${esc(m.why)}</div><div class="have">${m.have}</div><a href="${esc(m.url)}" target="_blank" rel="noopener">Open the post ↗</a></div>`).join("")}`;}
+
+/* ═══════════ SHEETS ═══════════ */
+const veil=document.getElementById("veil"),sheet=document.getElementById("sheet");
+const shut=()=>{veil.hidden=true;sheet.innerHTML="";};
+veil.addEventListener("click",e=>{if(e.target===veil)shut();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!veil.hidden)shut();});
+
+function openRecipe(id){
+  const r=RM[id];if(!r)return;const c=T[r.t].c,src=IMG(r),inb=S.basket[id];
+  let ing="",open=false;
+  for(const x of r.i){if(x[0]==="G"){if(open)ing+="</ul>";ing+=`<div class="gh">${esc(x[2])}</div><ul class="ig">`;open=true;continue;}
+    if(!open){ing+='<ul class="ig">';open=true;}const [q,u,nm,,nt]=x;
+    ing+=`<li><span class="q">${esc(q==null?"":fq(q)+(u?" "+u:""))}</span><span>${esc(nm)}${nt?` <span class="nt">${esc(nt)}</span>`:""}</span></li>`;}
+  if(open)ing+="</ul>";const m=r.m;
+  sheet.innerHTML=`<div class="sb" style="--tc:${c}">
+    <div class="hero">${src?`<img src="${src}" alt="${esc(r.n)}" onerror="this.remove()">`:`<div class="noimg"><span>${esc(r.n)}</span></div>`}<span class="grab"></span><button class="x" id="x1" aria-label="Close">×</button></div>
+    <div class="sc"><h2>${esc(r.n)}</h2><div class="dek">${esc(r.sub)}</div>
+      <div class="meta"><span class="pill" style="--tc:${c}"><i></i>${esc(T[r.t].short)}</span><span class="pill">${r.mins} min</span><span class="pill">serves ${r.serves}</span><span class="pill">@${esc(r.by.split(" ")[0])}</span>${r.merged?'<span class="pill">merged</span>':""}${r.partial?'<span class="pill" style="color:var(--warn)">partial</span>':""}${r.lang.includes("→")?'<span class="pill">translated</span>':""}</div>
+      ${m?`<div class="macros">${m.kcal?`<div><div class="k">Kcal</div><div class="v">${m.kcal}</div></div>`:""}<div><div class="k">Protein</div><div class="v">${m.p}g</div></div>${m.c!=null?`<div><div class="k">Carbs</div><div class="v">${m.c}g</div></div>`:""}${m.f!=null?`<div><div class="k">Fat</div><div class="v">${m.f}g</div></div>`:""}</div>`:""}
+      <div class="hint">${r.note}</div>
+      <p class="sh">Ingredients · serves ${r.serves}</p>${ing}
+      <p class="sh" style="margin-top:22px">Method</p><ol class="steps">${r.s.map(s=>`<li><span>${s}</span></li>`).join("")}</ol>
+      <div class="src"><a href="${esc(r.url)}" target="_blank" rel="noopener">${r.dir==="—"?"mob.co.uk":"Original reel"} ↗</a>${r.url2?` &nbsp; <a href="${esc(r.url2)}" target="_blank" rel="noopener">Second source ↗</a>`:""}${r.dir!=="—"?`<br>${esc(r.dir)}/video.mp4`:""}</div>
+    </div></div>
+    <div class="foot"><span class="stp"><button id="dn" aria-label="Fewer servings">−</button><b id="sv">${inb?inb.serv:r.serves}</b><button id="up" aria-label="More servings">+</button></span>
+      ${inb?`<button class="btn g" id="put">${CHK} In this week</button><button class="btn o" id="out" aria-label="Remove">Remove</button>`:`<button class="btn" id="put">Add to this week</button>`}</div>`;
+  veil.hidden=false;sheet.querySelector(".sb").scrollTop=0;sheet.querySelector("#x1").onclick=shut;
+  let sv=inb?inb.serv:r.serves;const v=sheet.querySelector("#sv");
+  const commit=()=>{if(S.basket[id]){S.basket[id].serv=sv;save();draw();}};
+  sheet.querySelector("#up").onclick=()=>{sv++;v.textContent=sv;commit();};
+  sheet.querySelector("#dn").onclick=()=>{if(sv>1){sv--;v.textContent=sv;commit();}};
+  sheet.querySelector("#put").onclick=()=>{if(S.basket[id]){shut();return;}S.basket[id]={serv:sv,cooked:false};save();draw();shut();toast("Added — "+sv+" serving"+(sv===1?"":"s"));};
+  const out=sheet.querySelector("#out");if(out)out.onclick=()=>{removeFromBasket(id);shut();};
+}
+function removeFromBasket(id){delete S.basket[id];for(const k in S.days)if(S.days[k]===id)delete S.days[k];save();draw();toast("Removed from this week");}
+const slotName=k=>{const[i,s]=k.split("-");return FULL[+i]+" "+SLOTS.find(x=>x[0]===s)[1].toLowerCase();};
+function openSlot(key){
+  const bk=basket(),cur=S.days[key];
+  sheet.innerHTML=`<div class="sc" style="padding-top:22px"><div style="display:flex;align-items:flex-start;gap:12px"><div style="flex:1"><h2>${esc(slotName(key))}</h2><div class="dek">Pick from what you're cooking this week.</div></div><button class="ico" id="xp" aria-label="Close">×</button></div>
+    <div style="margin-top:8px">${bk.map(b=>{const src=IMG(b.r);return `<button class="pk" data-pick="${b.id}"><span class="th" style="--tc:${T[b.r.t].c};background:${T[b.r.t].c}">${src?`<img src="${src}" alt="">`:""}</span><span><b>${esc(b.r.n)}</b><span>${b.serv} serving${b.serv===1?"":"s"} · ${b.r.mins} min</span></span>${cur===b.id?`<span class="chk">${CHK}</span>`:""}</button>`;}).join("")}</div>
+    <div class="row" style="margin-top:18px">${cur?`<button class="btn o s" id="clr">Clear this slot</button>`:""}<button class="btn o s" data-go="book">+ Add more from the Book</button></div></div>`;
+  veil.hidden=false;sheet.querySelector("#xp").onclick=shut;
+  sheet.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{S.days[key]=b.dataset.pick;save();draw();shut();});
+  const c=sheet.querySelector("#clr");if(c)c.onclick=()=>{delete S.days[key];save();draw();shut();};
+}
+
+/* ═══════════ WIRING ═══════════ */
+function go(t){tab=t;document.querySelectorAll(".nb").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));
+  ["book","week","shop","gone"].forEach(p=>document.getElementById("p-"+p).hidden=(p!==t));
+  document.getElementById("wk").hidden=(t==="book"||t==="gone");window.scrollTo({top:0,behavior:"instant"});}
+function draw(){const n=Object.keys(S.basket).length;document.getElementById("b-week").textContent=n?String(n):"";
+  document.getElementById("b-gone").textContent=String(GONE.length);
+  drawBook();drawWeek();drawShop();drawGone();
+  const mo=monday(wOff),su=new Date(mo);su.setDate(mo.getDate()+6);
+  document.getElementById("wl").textContent=wOff===0?"This week":wOff===1?"Next week":wOff===-1?"Last week":(wOff>0?"In "+wOff+" weeks":Math.abs(wOff)+" weeks ago");
+  document.getElementById("wd").textContent=fmt(mo)+" – "+fmt(su);}
+
+document.addEventListener("click",e=>{
+  const d=e.target.dataset||{};
+  if(d.del!==undefined){e.stopPropagation();S.extras.splice(+d.del,1);S.checked={};save();drawShop();return;}
+  const t=e.target.closest&&e.target.closest("[data-tab],[data-go],[data-open],[data-type],[data-chk],[data-pre],[data-cook],[data-sv],[data-rm],[data-slot]");
+  if(!t)return;const D=t.dataset;
+  if(D.tab){go(D.tab);return;}
+  if(D.go){shut();go(D.go);return;}
+  if(D.cook){S.basket[D.cook].cooked=!S.basket[D.cook].cooked;save();drawWeek();return;}
+  if(D.sv){const b=S.basket[D.sv];b.serv=Math.max(1,b.serv+(+D.d));save();draw();return;}
+  if(D.rm){removeFromBasket(D.rm);return;}
+  if(D.slot){openSlot(D.slot);return;}
+  if(D.open){openRecipe(D.open);return;}
+  if(D.type!==undefined){F.type=D.type||null;drawBook();return;}
+  if(D.chk){S.checked[D.chk]?delete S.checked[D.chk]:S.checked[D.chk]=1;save();drawShop();return;}
+  if(D.pre==="clear"){S.basket={};S.days={};S.checked={};save();draw();toast("Week cleared");return;}
+});
+document.addEventListener("input",e=>{if(e.target.id==="q"){F.q=e.target.value;drawBook();const i=document.getElementById("q");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}}});
+function addX(){const i=document.getElementById("xa");if(!i||!i.value.trim())return;S.extras.push(i.value.trim());i.value="";save();drawShop();const n=document.getElementById("xa");if(n)n.focus();}
+document.addEventListener("keydown",e=>{if(e.target.id==="xa"&&e.key==="Enter")addX();});
+document.addEventListener("click",e=>{
+  if(e.target.id==="xb")addX();
+  if(e.target.id==="unc"){S.checked={};save();drawShop();}
+  if(e.target.id==="cpy"){const by=list();let t="Shopping — week of "+fmt(monday(wOff))+"\n\n";
+    for(const [aid,an] of AISLES){const it=by[aid];if(!it||!it.length)continue;t+=an.toUpperCase()+"\n";it.forEach(x=>{const q=qtxt(x);t+="  · "+x.name+(q?"  "+q:"  (as needed)")+"\n";});t+="\n";}
+    if(S.extras.length){t+="ALSO\n";S.extras.forEach(x=>t+="  · "+x+"\n");}
+    navigator.clipboard.writeText(t).then(()=>toast("Copied"),()=>toast("Couldn't copy"));}
+});
+document.getElementById("wp").onclick=()=>{wOff--;watch();};
+document.getElementById("wn").onclick=()=>{wOff++;watch();};
+document.getElementById("theme").onclick=()=>{const c=document.documentElement.getAttribute("data-theme");const dark=c?c==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.setAttribute("data-theme",dark?"light":"dark");};
+
+/* A starter week on a first visit, so the board opens with something on it. */
+function seed(){try{if(localStorage.getItem(LS("seeded")))return false;localStorage.setItem(LS("seeded"),"1");}catch(e){}
+  if(wOff!==0||Object.keys(S.basket).length)return false;
+  [["bagels",4],["tandoori",4],["palakpaneer",4],["slopbowl",4],["tunapizza",2],["calabacinfrio",4],["onepotbulgogi",2]].forEach(([id,sv])=>S.basket[id]={serv:sv,cooked:false});
+  Object.assign(S.days,{"0-b":"bagels","0-d":"palakpaneer","1-l":"slopbowl","2-d":"tandoori","3-l":"calabacinfrio","4-d":"tunapizza"});
+  saveLocal();return true;}
+loadLocal();const fresh=seed();draw();go("week");
+if(fresh)setTimeout(()=>toast("A starter week to show you around — change anything"),800);
+if(window.claude&&window.claude.use)window.claude.use("db").then(db=>{if(db){DB=db;watch();}}).catch(()=>{});
+</script>

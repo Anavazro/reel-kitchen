@@ -664,6 +664,7 @@ function list(){
 function unitText(u,v){
   if(u==="vol"){ if(v>=48)return fq(Math.round(v/48*4)/4)+" cup"+(v/48>1?"s":""); if(v>=3)return fq(Math.round(v/3*4)/4)+" tbsp"; return fq(Math.round(v*4)/4)+" tsp"; }
   if(u==="g"||u==="ml")return Math.round(v)+" "+u;
+  v=Math.ceil(v*2)/2;                                   /* you can't buy 2.16 onions */
   if(u==="×")return fq(v);
   const n=fq(v);return n+" "+(v>1&&PLURAL[u]?PLURAL[u]:u);
 }

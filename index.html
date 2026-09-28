@@ -3,6 +3,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <style>
 :root{
   --bg:#FFFFFF; --band:#F4F4F1; --sunk:#ECECE8; --card:#FFFFFF;
@@ -724,5 +726,20 @@ function seed(){try{if(localStorage.getItem(LS("seeded")))return false;localStor
   saveLocal();return true;}
 loadLocal();const fresh=seed();draw();go("week");
 if(fresh)setTimeout(()=>toast("A starter week to show you around — change anything"),800);
-if(window.claude&&window.claude.use)window.claude.use("db").then(db=>{if(db){DB=db;watch();}}).catch(()=>{});
+/* ── live sync: Firestore, one shared household ── */
+(function(){
+  if(!window.firebase)return;
+  try{
+    firebase.initializeApp({apiKey:"AIzaSyDc5h4i69xvnU8iuzkVIWHFQMrALJ83GAA",authDomain:"reel-kitchen.firebaseapp.com",projectId:"reel-kitchen",appId:"1:585599944304:web:0860bf60a4130599f516b5"});
+    const fs=firebase.firestore(),HH="yu9helivke8mzuyrzs11j0a2";
+    /* same doc/onSnapshot shape the page already speaks; `checked` travels as an array */
+    DB={doc:p=>{const ref=fs.doc("households/"+HH+"/"+p);return{
+      set:d=>ref.set({...d,checked:Object.keys(d.checked||{})}),
+      onSnapshot:(next,err)=>ref.onSnapshot(s=>{
+        const d=s.exists?s.data():null;
+        if(d&&Array.isArray(d.checked))d.checked=Object.fromEntries(d.checked.map(k=>[k,1]));
+        next({exists:s.exists,metadata:s.metadata,data:()=>d});},err)};}};
+    watch();
+  }catch(e){}
+})();
 </script>
